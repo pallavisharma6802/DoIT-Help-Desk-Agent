@@ -1,0 +1,31 @@
+# Inference
+groq>=0.9.0
+
+# Embeddings + vector store
+chromadb>=0.5.0
+huggingface_hub>=0.23.0   # HF Inference API client (sentence-transformers/all-MiniLM-L6-v2)
+
+# Graph
+networkx>=3.3
+
+# Orchestration
+langgraph>=0.2.0
+langchain-core>=0.3.0
+
+# Backend
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+
+# Frontend
+streamlit>=1.36.0
+
+# Observability
+langfuse>=2.0.0
+
+# HTTP + scraping
+requests>=2.32.0
+beautifulsoup4>=4.12.0
+
+# Testing
+pytest>=8.2.0
+httpx>=0.27.0  # for FastAPI test client
