@@ -1,0 +1,197 @@
+"""
+Vector search + NetworkX graph traversal for KB retrieval.
+
+Public API:
+    retrieve(query, seen_kb_ids=None, top_k=3, _collection=None) -> list[dict]
+    build_graph() -> nx.Graph
+    graph_neighbors(start_id, seen_kb_ids=None, max_hops=2) -> list[str]
+"""
+
+import json
+import logging
+from pathlib import Path
+from typing import List, Optional
+
+import chromadb
+import networkx as nx
+
+from ingest import embed_query
+
+DATA_DIR = Path(__file__).parent.parent / "data" / "kbs"
+CHROMA_DIR = Path(__file__).parent.parent / "data" / "chroma"
+
+log = logging.getLogger(__name__)
+
+_graph: Optional[nx.Graph] = None
+
+
+def _load_collection() -> Optional[chromadb.Collection]:
+    if not CHROMA_DIR.exists():
+        return None
+    try:
+        client = chromadb.PersistentClient(path=str(CHROMA_DIR))
+        return client.get_collection("kb_articles")
+    except Exception:
+        return None
+
+
+def build_graph() -> nx.Graph:
+    """Build (and cache) a NetworkX graph from local KB JSON files.
+
+    Edges:
+    - same_category: all articles in the same category are connected
+    - keyword_overlap: cross-category articles sharing >= 2 non-trivial title words
+    """
+    global _graph
+    if _graph is not None:
+        return _graph
+
+    articles = {}
+    for f in DATA_DIR.glob("*.json"):
+        try:
+            d = json.loads(f.read_text())
+            articles[d["id"]] = d
+        except Exception:
+            continue
+
+    G = nx.Graph()
+    for aid, article in articles.items():
+        G.add_node(aid, title=article["title"], category=article["category"], url=article["url"])
+
+    # Same-category edges
+    by_category: dict = {}
+    for aid, article in articles.items():
+        by_category.setdefault(article.get("category", ""), []).append(aid)
+
+    for cat_ids in by_category.values():
+        for i, a in enumerate(cat_ids):
+            for b in cat_ids[i + 1:]:
+                G.add_edge(a, b, reason="same_category")
+
+    # Cross-category edges via title keyword overlap
+    stopwords = {
+        "the", "a", "an", "of", "for", "to", "in", "and", "or", "with",
+        "-", "how", "your", "is", "on", "at", "from", "by", "using",
+    }
+    ids_list = list(articles.keys())
+    for i, a in enumerate(ids_list):
+        words_a = set(articles[a]["title"].lower().split()) - stopwords
+        for b in ids_list[i + 1:]:
+            if G.has_edge(a, b):
+                continue
+            words_b = set(articles[b]["title"].lower().split()) - stopwords
+            if len(words_a & words_b) >= 2:
+                G.add_edge(a, b, reason="keyword_overlap")
+
+    _graph = G
+    log.info("Graph built: %d nodes, %d edges", G.number_of_nodes(), G.number_of_edges())
+    return G
+
+
+def retrieve(
+    query: str,
+    seen_kb_ids: List[str] = None,
+    top_k: int = 3,
+    _collection=None,
+) -> List[dict]:
+    """
+    Return top_k KB articles matching query, excluding seen_kb_ids.
+
+    Each returned dict: {id, title, body, category, url}
+
+    Pass _collection to override the default persisted ChromaDB (useful for tests).
+    If _collection has an embedding_function, query_texts is used; otherwise
+    embed_query() is called to produce the query vector.
+    """
+    if seen_kb_ids is None:
+        seen_kb_ids = []
+    seen_set = set(seen_kb_ids)
+
+    collection = _collection if _collection is not None else _load_collection()
+    if collection is None:
+        log.warning("ChromaDB not indexed. Run: python src/ingest.py index")
+        return []
+
+    n_total = collection.count()
+    if n_total == 0:
+        return []
+
+    fetch_n = min(top_k + len(seen_set) + 5, n_total)
+
+    try:
+        has_ef = getattr(collection, "_embedding_function", None) is not None
+        if has_ef:
+            results = collection.query(
+                query_texts=[query],
+                n_results=fetch_n,
+                include=["documents", "metadatas"],
+            )
+        else:
+            query_vec = embed_query(query)
+            results = collection.query(
+                query_embeddings=[query_vec],
+                n_results=fetch_n,
+                include=["documents", "metadatas"],
+            )
+    except Exception as e:
+        log.error("ChromaDB query failed: %s", e)
+        return []
+
+    nodes = []
+    for rid, meta, doc in zip(
+        results["ids"][0], results["metadatas"][0], results["documents"][0]
+    ):
+        if rid in seen_set:
+            continue
+        article_path = DATA_DIR / f"{rid}.json"
+        if article_path.exists():
+            body = json.loads(article_path.read_text()).get("body", "")
+        else:
+            parts = doc.split("\n\n", 1)
+            body = parts[1] if len(parts) > 1 else doc
+
+        nodes.append({
+            "id": rid,
+            "title": meta.get("title", ""),
+            "body": body,
+            "category": meta.get("category", ""),
+            "url": meta.get("url", ""),
+        })
+        if len(nodes) >= top_k:
+            break
+
+    return nodes
+
+
+def graph_neighbors(
+    start_id: str,
+    seen_kb_ids: List[str] = None,
+    max_hops: int = 2,
+) -> List[str]:
+    """
+    BFS from start_id up to max_hops, returning reachable node IDs.
+    Excludes start_id and seen_kb_ids from the result.
+    """
+    if seen_kb_ids is None:
+        seen_kb_ids = []
+    visited = set(seen_kb_ids) | {start_id}
+
+    G = build_graph()
+    if start_id not in G:
+        return []
+
+    reachable = []
+    frontier = {start_id}
+    for _ in range(max_hops):
+        next_frontier = set()
+        for node in frontier:
+            for neighbor in G.neighbors(node):
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    next_frontier.add(neighbor)
+                    reachable.append(neighbor)
+        frontier = next_frontier
+        if not frontier:
+            break
+
+    return reachable
