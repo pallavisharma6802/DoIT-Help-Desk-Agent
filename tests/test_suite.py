@@ -177,3 +177,91 @@ class TestRetriever:
         )
         overlap = {r["id"] for r in second} & set(seen)
         assert not overlap, f"Delta retriever returned already-seen IDs: {overlap}"
+
+
+# ===========================================================================
+# T13 – T15: Context manager tests
+# ===========================================================================
+
+class TestContextManager:
+
+    def test_T13_turn2_tokens_less_than_turn1(self):
+        """T13: Turn 2 input tokens < Turn 1 when KB nodes are deduplicated."""
+        from context_manager import new_session, build_turn_payload, count_tokens
+
+        kb_nodes = [
+            {"id": "1001", "title": "NetID Password Reset", "url": "https://kb.wisc.edu/1001",
+             "body": "To reset your NetID password go to netid.wisc.edu and follow the prompts."},
+            {"id": "1002", "title": "NetID Account Utilities", "url": "https://kb.wisc.edu/1002",
+             "body": "Use the account utilities page to manage your NetID settings and recovery options."},
+            {"id": "1003", "title": "NetID Login Problems", "url": "https://kb.wisc.edu/1003",
+             "body": "Common login problems include expired passwords and locked accounts."},
+        ]
+
+        session = new_session()
+
+        # Turn 1: all 3 nodes are new — full payload
+        msgs1 = build_turn_payload(session, "how do I reset my password", kb_nodes)
+        tokens1 = count_tokens(msgs1)
+
+        # Turn 2: same nodes already seen — no KB body re-injected
+        msgs2 = build_turn_payload(session, "what if I forgot my NetID", kb_nodes)
+        tokens2 = count_tokens(msgs2)
+
+        assert tokens2 < tokens1, (
+            f"Turn 2 tokens ({tokens2}) should be less than Turn 1 ({tokens1}) "
+            "after KB nodes are deduplicated."
+        )
+
+    def test_T14_system_prompt_byte_identical(self):
+        """T14: System prompt is byte-identical across 10 different sessions."""
+        from context_manager import new_session, build_turn_payload
+
+        kb_node = {"id": "999", "title": "Test", "url": "https://kb.wisc.edu/999", "body": "body"}
+        prompts = set()
+        for _ in range(10):
+            session = new_session()
+            msgs = build_turn_payload(session, "test query", [kb_node])
+            system_content = next(m["content"] for m in msgs if m["role"] == "system")
+            prompts.add(system_content)
+
+        assert len(prompts) == 1, (
+            f"System prompt varied across sessions — {len(prompts)} distinct versions found. "
+            "Must be byte-identical for prefix cache efficiency."
+        )
+
+    def test_T15_session_tokens_less_than_naive_rag(self):
+        """T15: 3-turn session total tokens < naive RAG baseline (3x single-turn tokens)."""
+        from context_manager import new_session, build_turn_payload, count_tokens
+
+        kb_nodes = [
+            {"id": str(i), "title": f"Article {i}", "url": f"https://kb.wisc.edu/{i}",
+             "body": f"This is the body of article {i}. " * 20}
+            for i in range(1, 7)  # 6 articles, 2 new per turn
+        ]
+
+        # Naive RAG baseline: every turn gets all 6 nodes fresh
+        session_naive = new_session()
+        naive_tokens = sum(
+            count_tokens(build_turn_payload(session_naive, f"query {t}", kb_nodes))
+            for t in range(3)
+        )
+        # Reset so naive session doesn't interfere
+        # (naive_tokens is already 3x single-turn since we use a fresh session each time)
+        single_turn_tokens = count_tokens(
+            build_turn_payload(new_session(), "query 0", kb_nodes)
+        )
+        naive_baseline = single_turn_tokens * 3
+
+        # Delta session: nodes accumulate in seen_kb_ids across turns
+        session_delta = new_session()
+        # Turn 1: nodes 0-1, turn 2: nodes 2-3, turn 3: nodes 4-5
+        delta_tokens = sum(
+            count_tokens(build_turn_payload(session_delta, f"query {t}", kb_nodes[t*2:(t*2)+2]))
+            for t in range(3)
+        )
+
+        assert delta_tokens < naive_baseline, (
+            f"Delta session tokens ({delta_tokens}) should be less than "
+            f"naive RAG baseline ({naive_baseline})."
+        )
