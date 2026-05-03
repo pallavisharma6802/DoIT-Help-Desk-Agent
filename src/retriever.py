@@ -35,12 +35,14 @@ def _load_collection() -> Optional[chromadb.Collection]:
         return None
 
 
-def build_graph() -> nx.Graph:
-    """Build (and cache) a NetworkX graph from local KB JSON files.
+def build_graph(similarity_threshold: float = 0.65, top_k_neighbors: int = 5) -> nx.Graph:
+    """Build (and cache) a semantic knowledge graph from ChromaDB embeddings.
 
-    Edges:
-    - same_category: all articles in the same category are connected
-    - keyword_overlap: cross-category articles sharing >= 2 non-trivial title words
+    Nodes: all KB articles.
+    Edges: pairs where cosine similarity >= similarity_threshold, limited to
+           top_k_neighbors per article to keep the graph sparse and meaningful.
+
+    Falls back to category-clique graph if ChromaDB is not indexed yet.
     """
     global _graph
     if _graph is not None:
@@ -58,33 +60,49 @@ def build_graph() -> nx.Graph:
     for aid, article in articles.items():
         G.add_node(aid, title=article["title"], category=article["category"], url=article["url"])
 
-    # Same-category edges
-    by_category: dict = {}
-    for aid, article in articles.items():
-        by_category.setdefault(article.get("category", ""), []).append(aid)
+    collection = _load_collection()
+    if collection is not None and collection.count() > 0:
+        # Pull all stored embeddings from ChromaDB
+        all_data = collection.get(include=["embeddings", "metadatas"])
+        ids = all_data["ids"]
+        embeddings = all_data["embeddings"]
 
-    for cat_ids in by_category.values():
-        for i, a in enumerate(cat_ids):
-            for b in cat_ids[i + 1:]:
-                G.add_edge(a, b, reason="same_category")
-
-    # Cross-category edges via title keyword overlap
-    stopwords = {
-        "the", "a", "an", "of", "for", "to", "in", "and", "or", "with",
-        "-", "how", "your", "is", "on", "at", "from", "by", "using",
-    }
-    ids_list = list(articles.keys())
-    for i, a in enumerate(ids_list):
-        words_a = set(articles[a]["title"].lower().split()) - stopwords
-        for b in ids_list[i + 1:]:
-            if G.has_edge(a, b):
+        # For each article query ChromaDB for its top_k_neighbors+1 nearest (includes self)
+        for i, (aid, vec) in enumerate(zip(ids, embeddings)):
+            if aid not in G:
                 continue
-            words_b = set(articles[b]["title"].lower().split()) - stopwords
-            if len(words_a & words_b) >= 2:
-                G.add_edge(a, b, reason="keyword_overlap")
+            results = collection.query(
+                query_embeddings=[vec],
+                n_results=min(top_k_neighbors + 1, len(ids)),
+                include=["metadatas", "distances"],
+            )
+            neighbor_ids = results["ids"][0]
+            distances = results["distances"][0]
+            for nid, dist in zip(neighbor_ids, distances):
+                if nid == aid:
+                    continue
+                # ChromaDB cosine distance: 0 = identical, 1 = orthogonal
+                similarity = 1.0 - dist
+                if similarity >= similarity_threshold and not G.has_edge(aid, nid):
+                    G.add_edge(aid, nid, weight=round(similarity, 4), reason="semantic")
+
+        log.info(
+            "Graph built from embeddings: %d nodes, %d edges (threshold=%.2f)",
+            G.number_of_nodes(), G.number_of_edges(), similarity_threshold,
+        )
+    else:
+        # Fallback: category cliques (used when ChromaDB not yet indexed)
+        log.warning("ChromaDB not indexed — building fallback category-clique graph.")
+        by_category: dict = {}
+        for aid, article in articles.items():
+            by_category.setdefault(article.get("category", ""), []).append(aid)
+        for cat_ids in by_category.values():
+            for i, a in enumerate(cat_ids):
+                for b in cat_ids[i + 1:]:
+                    G.add_edge(a, b, weight=0.5, reason="same_category")
+        log.info("Fallback graph: %d nodes, %d edges", G.number_of_nodes(), G.number_of_edges())
 
     _graph = G
-    log.info("Graph built: %d nodes, %d edges", G.number_of_nodes(), G.number_of_edges())
     return G
 
 

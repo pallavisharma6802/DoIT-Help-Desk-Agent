@@ -32,7 +32,7 @@ HEADERS = {"User-Agent": "DoIT-KB-Agent/1.0 (pallavisharm@wisc.edu; educational 
 REQUEST_DELAY = 0.5  # seconds between requests
 
 HF_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-HF_API_URL = f"https://api-inference.huggingface.co/pipeline/feature-extraction/{HF_MODEL}"
+HF_API_URL = f"https://router.huggingface.co/hf-inference/models/{HF_MODEL}/pipeline/feature-extraction"
 
 # Each entry: (search_query, category_slug, category_label, max_articles)
 CATEGORIES = [
