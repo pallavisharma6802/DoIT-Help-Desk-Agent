@@ -13,8 +13,9 @@ from pathlib import Path
 
 import pytest
 
-# Make src/ importable without installing the package
+# Make src/ and api/ importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "api"))
 
 # ---------------------------------------------------------------------------
 # Environment: load .env if python-dotenv is available, otherwise rely on
@@ -264,4 +265,136 @@ class TestContextManager:
         assert delta_tokens < naive_baseline, (
             f"Delta session tokens ({delta_tokens}) should be less than "
             f"naive RAG baseline ({naive_baseline})."
+        )
+
+
+# ===========================================================================
+# T08 – T12: Agent pipeline tests
+# ===========================================================================
+
+# Dummy KB nodes used in mocked tests
+_DUMMY_NODES = [
+    {"id": str(100 + i), "title": f"KB Article {i}", "body": f"content about netid password reset step {i} " * 15,
+     "category": "NetID", "url": f"https://kb.wisc.edu/{100 + i}"}
+    for i in range(20)
+]
+
+_GROQ_NOOP = {
+    "content": "I was unable to fully resolve this issue based on the provided articles.",
+    "input_tokens": 100, "output_tokens": 30,
+    "model": "llama-3.3-70b-versatile", "latency_ms": 200.0,
+}
+
+_GROQ_ANSWER = {
+    "content": "To reset your NetID password, visit [KB-1140] https://kb.wisc.edu/1140 and follow the steps.",
+    "input_tokens": 120, "output_tokens": 40,
+    "model": "llama-3.3-70b-versatile", "latency_ms": 210.0,
+}
+
+
+@pytest.fixture(scope="module")
+def simple_agent_result():
+    """Run the agent once with a real simple query. Shared by T08, T11, T12."""
+    import agent
+    return agent.run("how do I reset my NetID password")
+
+
+class TestAgentPipeline:
+
+    def test_T08_simple_query_resolves_in_one_turn(self, simple_agent_result):
+        """T08: Simple query resolves in exactly 1 turn."""
+        result = simple_agent_result
+        assert result["turn"] == 1, (
+            f"Expected 1 turn for simple query, got {result['turn']}."
+        )
+        assert result["resolved"] is True
+        assert result["escalated"] is False
+
+    def test_T09_multi_turn_no_duplicate_kb_nodes(self, monkeypatch):
+        """T09: Multi-turn session never injects same KB node twice."""
+        import agent
+
+        def mock_groq_chat(model, messages, **kwargs):
+            return _GROQ_NOOP
+
+        def mock_classify(query):
+            return {"complexity": "complex", "confidence": 0.9, "reasoning": "mock", "latency_ms": 10}
+
+        def mock_retrieve(query, seen_kb_ids=None, top_k=3, _collection=None):
+            seen = set(seen_kb_ids or [])
+            return [n for n in _DUMMY_NODES if n["id"] not in seen][:top_k]
+
+        monkeypatch.setattr(agent, "groq_chat", mock_groq_chat)
+        monkeypatch.setattr(agent, "classify_query", mock_classify)
+        monkeypatch.setattr(agent._retriever, "retrieve", mock_retrieve)
+
+        result = agent.run("my O365 stopped working after affiliation change")
+        seen = result["session"].seen_kb_ids
+        assert len(seen) == len(set(seen)), (
+            f"Duplicate KB IDs found in seen_kb_ids: {seen}"
+        )
+
+    def test_T10_escalates_after_4_unresolved_turns(self, monkeypatch):
+        """T10: Agent sets escalated=True after 4 unresolved turns."""
+        import agent
+
+        def mock_groq_chat(model, messages, **kwargs):
+            return _GROQ_NOOP
+
+        def mock_classify(query):
+            return {"complexity": "complex", "confidence": 0.9, "reasoning": "mock", "latency_ms": 10}
+
+        def mock_retrieve(query, seen_kb_ids=None, top_k=3, _collection=None):
+            seen = set(seen_kb_ids or [])
+            return [n for n in _DUMMY_NODES if n["id"] not in seen][:top_k]
+
+        monkeypatch.setattr(agent, "groq_chat", mock_groq_chat)
+        monkeypatch.setattr(agent, "classify_query", mock_classify)
+        monkeypatch.setattr(agent._retriever, "retrieve", mock_retrieve)
+
+        result = agent.run("complex unresolvable issue")
+        assert result["escalated"] is True, "Agent should have escalated after 4 turns."
+        assert result["turn"] == 4, f"Expected 4 turns, got {result['turn']}."
+
+    def test_T11_every_response_has_kb_citation(self, simple_agent_result):
+        """T11: Agent response contains at least 1 KB citation with id and url."""
+        result = simple_agent_result
+        citations = result["kb_citations"]
+        assert len(citations) >= 1, "Response must include at least 1 KB citation."
+        for c in citations:
+            assert "id" in c and c["id"], f"Citation missing id: {c}"
+            assert "url" in c and c["url"].startswith("https://kb.wisc.edu"), (
+                f"Citation has invalid url: {c}"
+            )
+
+    def test_T12_response_grounded_in_kb_nodes(self, simple_agent_result):
+        """T12: Response keywords overlap with retrieved KB content (hallucination guard)."""
+        import re
+        result = simple_agent_result
+        answer = result["answer"].lower()
+
+        # Load bodies of cited KB articles
+        kb_text = ""
+        for c in result["kb_citations"]:
+            kb_path = _DATA_DIR / f"{c['id']}.json"
+            if kb_path.exists():
+                kb_text += json.loads(kb_path.read_text()).get("body", "").lower()
+
+        if not kb_text:
+            pytest.skip("No KB article bodies available to check overlap.")
+
+        stopwords = {
+            "this", "that", "with", "from", "your", "have", "will", "been",
+            "they", "their", "would", "could", "about", "which", "when",
+            "then", "than", "also", "just", "more", "some", "what",
+        }
+        answer_words = set(re.findall(r'\b[a-z]{4,}\b', answer)) - stopwords
+        if not answer_words:
+            pytest.skip("Answer too short to check overlap.")
+
+        overlap = sum(1 for w in answer_words if w in kb_text)
+        ratio = overlap / len(answer_words)
+        assert ratio >= 0.3, (
+            f"Low KB overlap ratio ({ratio:.2f}) — response may not be grounded. "
+            f"Answer words: {answer_words}"
         )
