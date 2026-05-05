@@ -398,3 +398,89 @@ class TestAgentPipeline:
             f"Low KB overlap ratio ({ratio:.2f}) — response may not be grounded. "
             f"Answer words: {answer_words}"
         )
+
+
+# ===========================================================================
+# T16 – T19: API tests
+# ===========================================================================
+
+@pytest.fixture(scope="module")
+def api_client():
+    """FastAPI test client with mocked agent and streaming."""
+    from fastapi.testclient import TestClient
+    import main as api_main
+    import agent as _agent_mod
+
+    _MOCK_RESULT = {
+        "answer": "To reset your NetID password visit [KB-1140] https://kb.wisc.edu/1140.",
+        "kb_citations": [{"id": "1140", "url": "https://kb.wisc.edu/1140"}],
+        "turn": 1,
+        "resolved": True,
+        "escalated": False,
+        "session": __import__("context_manager").new_session(),
+    }
+
+    def mock_agent_run(query, session=None):
+        return _MOCK_RESULT
+
+    def mock_groq_stream(model, messages, **kwargs):
+        yield "To reset your NetID "
+        yield "password visit [KB-1140]."
+
+    mp = pytest.MonkeyPatch()
+    mp.setattr(_agent_mod, "run", mock_agent_run)
+    mp.setattr(api_main, "groq_stream", mock_groq_stream)
+    mp.setattr(api_main, "classify_query",
+               lambda q: {"complexity": "simple", "confidence": 0.9, "reasoning": "", "latency_ms": 10})
+    mp.setattr(api_main, "kb_retrieve", lambda q, top_k=3: [])
+
+    yield TestClient(api_main.app)
+    mp.undo()
+
+
+class TestAPI:
+
+    def test_T16_health_returns_200(self, api_client):
+        """T16: /health returns 200."""
+        r = api_client.get("/health")
+        assert r.status_code == 200
+        assert r.json()["status"] == "ok"
+
+    def test_T17_chat_returns_required_fields(self, api_client):
+        """T17: /chat returns answer, kb_citations[], turn, resolved, escalated."""
+        r = api_client.post("/chat", json={"query": "how do I reset my NetID password"})
+        assert r.status_code == 200
+        body = r.json()
+        for field in ("answer", "kb_citations", "turn", "resolved", "escalated"):
+            assert field in body, f"Missing field: {field}"
+        assert isinstance(body["kb_citations"], list)
+        assert isinstance(body["turn"], int)
+        assert isinstance(body["resolved"], bool)
+        assert isinstance(body["escalated"], bool)
+
+    def test_T18_agent_assist_ttft_under_2000ms(self, api_client):
+        """T18: /agent-assist TTFT under 2000ms (request to first token)."""
+        t0 = time.monotonic()
+        with api_client.stream("POST", "/agent-assist",
+                               json={"query": "how do I reset my NetID password"}) as r:
+            assert r.status_code == 200
+            for chunk in r.iter_bytes():
+                if chunk:
+                    ttft_ms = (time.monotonic() - t0) * 1000
+                    break
+        assert ttft_ms < 2000, f"TTFT was {ttft_ms:.0f}ms — exceeds 2000ms budget."
+
+    def test_T19_metrics_returns_token_counts_and_cost(self, api_client):
+        """T19: /metrics returns per-session token counts and cost estimate."""
+        # Ensure at least one session exists (T17 creates one)
+        r = api_client.get("/metrics")
+        assert r.status_code == 200
+        body = r.json()
+        assert "sessions" in body
+        assert "total_cost_usd" in body
+        assert isinstance(body["sessions"], list)
+        if body["sessions"]:
+            s = body["sessions"][0]
+            for field in ("session_id", "total_input_tokens",
+                          "total_output_tokens", "estimated_cost_usd"):
+                assert field in s, f"Missing metrics field: {field}"

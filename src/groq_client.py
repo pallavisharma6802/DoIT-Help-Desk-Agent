@@ -178,3 +178,32 @@ def groq_chat(
 
     # Unreachable, but satisfies type checkers
     raise RuntimeError("groq_chat: exhausted retries without returning or raising")
+
+
+def groq_stream(
+    model: str,
+    messages: List[Dict[str, str]],
+    max_tokens: int = 512,
+    temperature: float = 0.0,
+):
+    """
+    Stream a chat completion from Groq. Yields string content chunks as they arrive.
+
+    Enforces the 2-second inter-request gap. Does not apply the token guard
+    (token count is unknown until stream completes).
+    """
+    _enforce_gap()
+    client = _get_client()
+    t0 = time.monotonic()
+    with client.chat.completions.create(
+        model=model,
+        messages=messages,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        stream=True,
+    ) as stream:
+        for chunk in stream:
+            delta = chunk.choices[0].delta.content
+            if delta:
+                yield delta
+    log.info("groq_stream | model=%s latency_ms=%.0f", model, (time.monotonic() - t0) * 1000)
