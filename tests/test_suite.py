@@ -484,3 +484,60 @@ class TestAPI:
             for field in ("session_id", "total_input_tokens",
                           "total_output_tokens", "estimated_cost_usd"):
                 assert field in s, f"Missing metrics field: {field}"
+
+
+# ===========================================================================
+# T20: Load test
+# ===========================================================================
+
+class TestLoad:
+
+    def test_T20_10_concurrent_chat_requests(self):
+        """T20: 10 concurrent /chat requests complete without error,
+        median TTFT under 3000ms."""
+        import threading
+        import statistics
+        from fastapi.testclient import TestClient
+        import main as api_main
+        import agent as _agent_mod
+
+        _MOCK_RESULT = {
+            "answer": "Reset your NetID at [KB-1140] https://kb.wisc.edu/1140.",
+            "kb_citations": [{"id": "1140", "url": "https://kb.wisc.edu/1140"}],
+            "turn": 1,
+            "resolved": True,
+            "escalated": False,
+            "session": __import__("context_manager").new_session(),
+        }
+
+        mp = pytest.MonkeyPatch()
+        mp.setattr(_agent_mod, "run", lambda q, session=None: _MOCK_RESULT)
+        client = TestClient(api_main.app)
+
+        results = []
+        errors  = []
+
+        def call():
+            t0 = time.monotonic()
+            try:
+                r = client.post("/chat", json={"query": "how do I reset my NetID password"})
+                elapsed = (time.monotonic() - t0) * 1000
+                if r.status_code == 200:
+                    results.append(elapsed)
+                else:
+                    errors.append(f"HTTP {r.status_code}")
+            except Exception as e:
+                errors.append(str(e))
+
+        threads = [threading.Thread(target=call) for _ in range(10)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        mp.undo()
+
+        assert not errors, f"Errors in concurrent requests: {errors}"
+        assert len(results) == 10, f"Only {len(results)}/10 requests succeeded."
+        median_ms = statistics.median(results)
+        assert median_ms < 3000, f"Median TTFT {median_ms:.0f}ms exceeds 3000ms budget."

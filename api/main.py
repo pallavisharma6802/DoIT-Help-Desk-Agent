@@ -14,9 +14,16 @@ import logging
 from pathlib import Path
 from typing import List, Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+
+# Load .env so the server works when started with plain `uvicorn api.main:app`
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent.parent / ".env")
+except ImportError:
+    pass
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
@@ -31,8 +38,9 @@ log = logging.getLogger(__name__)
 
 app = FastAPI(title="DoIT KB Agentic Assistant")
 
-# In-memory session metrics store: session_id -> metrics dict
-_session_metrics: dict = {}
+# In-memory stores
+_session_metrics: dict = {}   # session_id -> metrics dict
+_session_state: dict = {}     # session_id -> SessionState (persists across messages)
 
 _REASONING_MODEL = "llama-3.3-70b-versatile"
 
@@ -75,7 +83,19 @@ def chat(body: ChatRequest):
     session_id = body.session_id or new_session_id()
     t0 = time.monotonic()
 
-    result = _agent.run(body.query)
+    # Reuse existing session so history carries across messages
+    existing_session = _session_state.get(session_id)
+
+    try:
+        result = _agent.run(body.query, session=existing_session)
+    except EnvironmentError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        log.exception("agent.run failed")
+        raise HTTPException(status_code=500, detail=str(e))
+
+    # Persist session for next message
+    _session_state[session_id] = result["session"]
 
     ttft_ms = (time.monotonic() - t0) * 1000
 

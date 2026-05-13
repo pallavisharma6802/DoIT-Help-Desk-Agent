@@ -47,6 +47,7 @@ class AgentState(TypedDict):
     escalated: bool
     total_input_tokens: int
     total_output_tokens: int
+    history: List[dict]
     # Per-turn
     kb_nodes: List[dict]
     answer: str
@@ -80,6 +81,7 @@ def _generate(state: AgentState) -> dict:
         escalated=state["escalated"],
         total_input_tokens=state["total_input_tokens"],
         total_output_tokens=state["total_output_tokens"],
+        history=list(state["history"]),
     )
 
     messages = build_turn_payload(session, state["query"], state["kb_nodes"])
@@ -105,6 +107,10 @@ def _generate(state: AgentState) -> dict:
     if not kb_citations and state["kb_nodes"]:
         kb_citations = [{"id": n["id"], "url": n["url"]} for n in state["kb_nodes"]]
 
+    # Update conversation history for next turn
+    session.history.append({"role": "user", "content": state["query"]})
+    session.history.append({"role": "assistant", "content": answer})
+
     return {
         "answer": answer,
         "kb_citations": kb_citations,
@@ -112,6 +118,7 @@ def _generate(state: AgentState) -> dict:
         "turn_count": session.turn_count,
         "total_input_tokens": session.total_input_tokens,
         "total_output_tokens": session.total_output_tokens,
+        "history": session.history,
     }
 
 
@@ -139,8 +146,18 @@ def _mark_resolved(state: AgentState) -> dict:
     return {"resolved": True}
 
 
+_ESCALATION_ANSWER = (
+    "I wasn't able to fully resolve this through the Knowledge Base. "
+    "Please contact the DoIT Help Desk directly:\n\n"
+    "- **Phone:** 608-264-4357 (608-264-HELP)\n"
+    "- **Chat / Email:** https://it.wisc.edu/help\n"
+    "- **Walk-in:** 1210 W Dayton St, Madison\n\n"
+    "A support agent can look up your account directly and resolve this for you."
+)
+
+
 def _mark_escalated(state: AgentState) -> dict:
-    return {"escalated": True}
+    return {"escalated": True, "answer": _ESCALATION_ANSWER, "kb_citations": []}
 
 
 # ---------------------------------------------------------------------------
@@ -196,6 +213,7 @@ def run(query: str, session: SessionState = None) -> dict:
         "escalated": session.escalated,
         "total_input_tokens": session.total_input_tokens,
         "total_output_tokens": session.total_output_tokens,
+        "history": list(session.history),
         "kb_nodes": [],
         "answer": "",
         "kb_citations": [],
@@ -210,6 +228,7 @@ def run(query: str, session: SessionState = None) -> dict:
         escalated=final["escalated"],
         total_input_tokens=final["total_input_tokens"],
         total_output_tokens=final["total_output_tokens"],
+        history=final["history"],
     )
 
     return {

@@ -42,6 +42,7 @@ class SessionState:
     escalated: bool = False
     total_input_tokens: int = 0
     total_output_tokens: int = 0
+    history: List[Dict[str, str]] = field(default_factory=list)  # [{role, content}]
 
 
 def new_session() -> SessionState:
@@ -87,10 +88,13 @@ def build_turn_payload(
     else:
         user_content = f"Question: {query}"
 
-    messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user",   "content": user_content},
-    ]
+    # Build messages: system prompt + conversation history (last 4 turns) + current question
+    history_window = session.history[-4:] if session.history else []
+    messages = (
+        [{"role": "system", "content": SYSTEM_PROMPT}]
+        + history_window
+        + [{"role": "user", "content": user_content}]
+    )
 
     # Update session state
     for n in delta_nodes:
