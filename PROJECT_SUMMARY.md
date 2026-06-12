@@ -257,9 +257,18 @@ BM25 keyword score  +  semantic score  →  RRF  →  top-k
 
 Keyword search catches exact product names and article IDs; semantic search handles paraphrases and vague descriptions. Combined recall is almost always higher than either alone.
 
-### The unused graph traversal
+### Graph traversal on complex query re-retrieval
 
-The NetworkX graph is built with edges between articles with cosine similarity ≥ 0.60. The intent is: on the second retrieve iteration (when the first didn't resolve), use BFS on the graph to find *related* articles rather than running the same vector query again. Currently the second iteration re-queries ChromaDB with the same string — often returning overlapping results. Wiring `graph_neighbors()` into the loop would be the most impactful retrieval improvement available without changing the stack.
+The NetworkX graph (edges = cosine similarity ≥ 0.60) is now wired into the agent loop for complex queries. The retrieval strategy is:
+
+```
+iteration 1 (any complexity)   → semantic search (ChromaDB)
+iteration 2+ AND complex       → graph traversal from seen articles (max_hops=1)
+                                  fallback to semantic search if graph yields nothing
+iteration 2+ AND simple        → semantic search (simple queries escalate after 1 try anyway)
+```
+
+On re-retrieval, `graph_neighbors()` does BFS from every previously seen article, collecting direct neighbors not yet seen. This finds articles that are *semantically adjacent* to what the model already tried — rather than re-running the same vector query and risking the same results. `retrieve_by_ids()` (added to `retriever.py`) loads those articles from disk by ID.
 
 ---
 

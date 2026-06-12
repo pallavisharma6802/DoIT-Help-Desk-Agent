@@ -188,6 +188,38 @@ def retrieve(
     return nodes
 
 
+def retrieve_by_ids(
+    ids: List[str],
+    seen_kb_ids: List[str] = None,
+    top_k: int = 3,
+) -> List[dict]:
+    """Load KB articles by ID from disk, excluding seen_kb_ids."""
+    if seen_kb_ids is None:
+        seen_kb_ids = []
+    seen_set = set(seen_kb_ids)
+    nodes = []
+    for nid in ids:
+        if nid in seen_set:
+            continue
+        article_path = DATA_DIR / f"{nid}.json"
+        if not article_path.exists():
+            continue
+        try:
+            article = json.loads(article_path.read_text())
+            nodes.append({
+                "id":       nid,
+                "title":    article["title"],
+                "body":     article["body"],
+                "category": article["category"],
+                "url":      article["url"],
+            })
+        except Exception:
+            continue
+        if len(nodes) >= top_k:
+            break
+    return nodes
+
+
 def graph_neighbors(
     start_id: str,
     seen_kb_ids: List[str] = None,

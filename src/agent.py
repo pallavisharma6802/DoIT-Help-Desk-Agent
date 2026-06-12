@@ -62,11 +62,41 @@ def _classify(state: AgentState) -> dict:
 
 
 def _retrieve(state: AgentState) -> dict:
-    nodes = _retriever.retrieve(
-        state["query"],
-        seen_kb_ids=state["seen_kb_ids"],
-        top_k=_TOP_K,
-    )
+    is_reiteration = state["turn_count"] > 0
+
+    # First iteration or simple query: semantic search
+    if not is_reiteration or state["complexity"] != "complex":
+        nodes = _retriever.retrieve(
+            state["query"],
+            seen_kb_ids=state["seen_kb_ids"],
+            top_k=_TOP_K,
+        )
+        return {"kb_nodes": nodes}
+
+    # Complex query, second+ iteration: graph traversal from seen articles
+    seen = state["seen_kb_ids"]
+    seen_set = set(seen)
+    neighbor_ids: List[str] = []
+    for start_id in seen:
+        for nid in _retriever.graph_neighbors(start_id, seen_kb_ids=list(seen_set), max_hops=1):
+            if nid not in seen_set:
+                neighbor_ids.append(nid)
+                seen_set.add(nid)
+
+    nodes = _retriever.retrieve_by_ids(neighbor_ids, seen_kb_ids=seen, top_k=_TOP_K)
+
+    if nodes:
+        log.info("graph traversal | iter=%d seen=%d neighbors=%d",
+                 state["turn_count"], len(seen), len(nodes))
+    else:
+        log.info("graph traversal yielded nothing at iter=%d — falling back to semantic search",
+                 state["turn_count"])
+        nodes = _retriever.retrieve(
+            state["query"],
+            seen_kb_ids=state["seen_kb_ids"],
+            top_k=_TOP_K,
+        )
+
     return {"kb_nodes": nodes}
 
 
