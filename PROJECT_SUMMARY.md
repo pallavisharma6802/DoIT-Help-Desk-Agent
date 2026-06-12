@@ -224,6 +224,45 @@ Trace (session level)
 
 ---
 
+## Retrieval Strategy: Semantic Search vs. Keyword Search
+
+### What the system currently does
+
+Retrieval is **semantic search only** — query is embedded via HuggingFace (`all-MiniLM-L6-v2`) and matched against ChromaDB vectors using cosine similarity. The NetworkX knowledge graph is built but `graph_neighbors()` is **never called in the agent loop** — it exists as dead code for now.
+
+### Why semantic search fits this project
+
+| Reason | Example |
+|---|---|
+| Users don't use technical jargon | "my wifi won't work" → correctly retrieves eduroam articles |
+| Synonyms handled naturally | "forgot password" = "password recovery" = "reset credentials" |
+| Terse, fragmented queries work | Test queries like "duo setup new phone" have no grammar — embeddings handle it |
+| Cross-concept matching | "can't log in after leaving UW" can pull O365 deactivation AND NetID expiry together |
+
+### Cons — where pure semantic search hurts
+
+- **Exact-match failures**: product names like `GlobalProtect` or `KB-148522` get approximated through embedding space when a direct match would be more reliable.
+- **General-purpose embedding model**: `all-MiniLM-L6-v2` is not fine-tuned on IT support. Terms like `eduroam`, `WiscVPN`, `Workspace ONE` may have weak or miscalibrated embeddings.
+- **False positives from topical proximity**: "can't log in" is semantically close to every auth-related article — top-3 results may not be the right 3.
+- **No hard filtering**: keyword search allows constraints like *must contain "GlobalProtect" AND "macOS"*; semantic search only scores.
+- **Embedding latency**: every query requires a HuggingFace API round-trip before ChromaDB runs. BM25 keyword search would run locally in milliseconds.
+
+### The right long-term approach: hybrid retrieval
+
+The industry standard for RAG systems is **BM25 + semantic → Reciprocal Rank Fusion (RRF)**:
+
+```
+BM25 keyword score  +  semantic score  →  RRF  →  top-k
+```
+
+Keyword search catches exact product names and article IDs; semantic search handles paraphrases and vague descriptions. Combined recall is almost always higher than either alone.
+
+### The unused graph traversal
+
+The NetworkX graph is built with edges between articles with cosine similarity ≥ 0.60. The intent is: on the second retrieve iteration (when the first didn't resolve), use BFS on the graph to find *related* articles rather than running the same vector query again. Currently the second iteration re-queries ChromaDB with the same string — often returning overlapping results. Wiring `graph_neighbors()` into the loop would be the most impactful retrieval improvement available without changing the stack.
+
+---
+
 ## Current Limits / Known Constraints
 
 - **Groq free tier**: 100k tokens/day for llama-3.3-70b-versatile. Heavy multi-turn testing exhausts this quickly.
