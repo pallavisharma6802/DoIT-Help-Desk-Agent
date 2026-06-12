@@ -34,6 +34,7 @@ st.set_page_config(
     page_title="DoIT KB Assistant" if not is_agent else "DoIT Agent Assist",
     page_icon="🎓" if not is_agent else "🛠️",
     layout="centered",
+    initial_sidebar_state="expanded",
 )
 
 # ---------------------------------------------------------------------------
@@ -117,7 +118,8 @@ for msg in st.session_state.messages:
                 badge = '<span class="badge-escalated">⚠ Escalated</span>'
             if badge:
                 st.markdown(badge, unsafe_allow_html=True)
-            st.caption(f"Turn {m.get('turn','-')} · session `{st.session_state.session_id[:8]}`")
+            complexity_label = f"· {m.get('complexity','')}" if m.get("complexity") else ""
+            st.caption(f"Turn {m.get('turn','-')} {complexity_label} · session `{st.session_state.session_id[:8]}`")
 
 # ---------------------------------------------------------------------------
 # Input
@@ -205,10 +207,13 @@ if query := st.chat_input(placeholder):
 
             answer = data["answer"]
             citations = data.get("kb_citations", [])
+            graph_trace = data.get("graph_trace", [])
             meta = {
-                "turn":      data.get("turn"),
-                "resolved":  data.get("resolved"),
-                "escalated": data.get("escalated"),
+                "turn":        data.get("turn"),
+                "resolved":    data.get("resolved"),
+                "escalated":   data.get("escalated"),
+                "complexity":  data.get("complexity", ""),
+                "graph_trace": graph_trace,
             }
 
             st.markdown(answer)
@@ -226,7 +231,9 @@ if query := st.chat_input(placeholder):
                 badge = '<span class="badge-escalated">⚠ Escalated — human agent recommended</span>'
             if badge:
                 st.markdown(badge, unsafe_allow_html=True)
-            st.caption(f"Turn {meta['turn']} · session `{st.session_state.session_id[:8]}`")
+
+            complexity_label = f"· classified as **{meta['complexity']}**" if meta["complexity"] else ""
+            st.caption(f"Turn {meta['turn']} {complexity_label} · session `{st.session_state.session_id[:8]}`")
 
             st.session_state.messages.append({
                 "role": "assistant",
@@ -256,6 +263,25 @@ with st.sidebar:
     st.divider()
     st.markdown("### Session")
     st.code(st.session_state.session_id[:8], language=None)
+
+    if st.button("End & Log Session", use_container_width=True, type="primary"):
+        if st.session_state.messages:
+            try:
+                resp = requests.post(
+                    f"{API_BASE}/end-session",
+                    json={"session_id": st.session_state.session_id},
+                    timeout=10,
+                )
+                resp.raise_for_status()
+                st.success("Session logged to Langfuse.")
+            except Exception as e:
+                st.error(f"Logging failed: {e}")
+        else:
+            st.warning("No messages to log.")
+        st.session_state.session_id = str(uuid.uuid4())
+        st.session_state.messages = []
+        st.rerun()
+
     if st.button("New session", use_container_width=True):
         st.session_state.session_id = str(uuid.uuid4())
         st.session_state.messages = []
@@ -263,12 +289,19 @@ with st.sidebar:
 
     st.divider()
     st.markdown("### Categories covered")
-    for cat, icon in [
-        ("O365 / Outlook", "✉️"),
-        ("NetID", "🔑"),
-        ("Duo MFA", "🔐"),
-        ("VPN (GlobalProtect)", "🌐"),
-        ("WiFi (eduroam/UWNet)", "📶"),
-        ("Printing", "🖨️"),
-    ]:
-        st.markdown(f"{icon} {cat}")
+    # Dynamically read from scraped KB articles
+    try:
+        import json
+        from pathlib import Path
+        from collections import Counter
+        kbs_dir = Path(__file__).parent.parent / "data" / "kbs"
+        cats = Counter(
+            json.loads(f.read_text())["category"]
+            for f in kbs_dir.glob("*.json")
+        )
+        for cat, count in sorted(cats.items()):
+            st.markdown(f"- {cat} &nbsp;<span style='color:#888;font-size:11px'>({count})</span>",
+                        unsafe_allow_html=True)
+        st.caption(f"{sum(cats.values())} articles total")
+    except Exception:
+        st.markdown("30 topic areas covered")

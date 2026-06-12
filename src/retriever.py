@@ -1,12 +1,3 @@
-"""
-Vector search + NetworkX graph traversal for KB retrieval.
-
-Public API:
-    retrieve(query, seen_kb_ids=None, top_k=3, _collection=None) -> list[dict]
-    build_graph() -> nx.Graph
-    graph_neighbors(start_id, seen_kb_ids=None, max_hops=2) -> list[str]
-"""
-
 import json
 import logging
 from pathlib import Path
@@ -35,12 +26,14 @@ def _load_collection() -> Optional[chromadb.Collection]:
         return None
 
 
-def build_graph(similarity_threshold: float = 0.65, top_k_neighbors: int = 5) -> nx.Graph:
+def build_graph(similarity_threshold: float = 0.60, top_k_neighbors: int = 10) -> nx.Graph:
     """Build (and cache) a semantic knowledge graph from ChromaDB embeddings.
 
     Nodes: all KB articles.
     Edges: pairs where cosine similarity >= similarity_threshold, limited to
            top_k_neighbors per article to keep the graph sparse and meaningful.
+    Isolated nodes (no edges after threshold pass) are connected to their
+    single most-similar neighbor so every article appears in the graph.
 
     Falls back to category-clique graph if ChromaDB is not indexed yet.
     """
@@ -67,6 +60,9 @@ def build_graph(similarity_threshold: float = 0.65, top_k_neighbors: int = 5) ->
         ids = all_data["ids"]
         embeddings = all_data["embeddings"]
 
+        # Store best neighbor for each node (fallback for isolated nodes)
+        best_neighbor: dict = {}   # aid -> (nid, similarity)
+
         # For each article query ChromaDB for its top_k_neighbors+1 nearest (includes self)
         for i, (aid, vec) in enumerate(zip(ids, embeddings)):
             if aid not in G:
@@ -83,12 +79,23 @@ def build_graph(similarity_threshold: float = 0.65, top_k_neighbors: int = 5) ->
                     continue
                 # ChromaDB cosine distance: 0 = identical, 1 = orthogonal
                 similarity = 1.0 - dist
+                # Track best neighbor regardless of threshold
+                if aid not in best_neighbor or similarity > best_neighbor[aid][1]:
+                    best_neighbor[aid] = (nid, similarity)
                 if similarity >= similarity_threshold and not G.has_edge(aid, nid):
                     G.add_edge(aid, nid, weight=round(similarity, 4), reason="semantic")
 
+        # Connect any still-isolated nodes to their best neighbor
+        isolated = list(nx.isolates(G))
+        for aid in isolated:
+            if aid in best_neighbor:
+                nid, sim = best_neighbor[aid]
+                if nid in G and not G.has_edge(aid, nid):
+                    G.add_edge(aid, nid, weight=round(sim, 4), reason="fallback")
+
         log.info(
-            "Graph built from embeddings: %d nodes, %d edges (threshold=%.2f)",
-            G.number_of_nodes(), G.number_of_edges(), similarity_threshold,
+            "Graph built from embeddings: %d nodes, %d edges (threshold=%.2f, isolated_fixed=%d)",
+            G.number_of_nodes(), G.number_of_edges(), similarity_threshold, len(isolated),
         )
     else:
         # Fallback: category cliques (used when ChromaDB not yet indexed)

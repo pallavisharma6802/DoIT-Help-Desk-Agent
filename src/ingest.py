@@ -1,15 +1,3 @@
-"""
-KB scraper + ChromaDB indexer.
-
-Run scraping:   python src/ingest.py scrape
-Run indexing:   python src/ingest.py index   (requires HF_TOKEN env var)
-Run both:       python src/ingest.py
-
-Embeddings: sentence-transformers/all-MiniLM-L6-v2 via HuggingFace Inference API.
-Articles are embedded once at index time and persisted in ChromaDB.
-At query time only the user query is embedded (see embed_query()).
-"""
-
 import json
 import os
 import re
@@ -36,18 +24,47 @@ HF_API_URL = f"https://router.huggingface.co/hf-inference/models/{HF_MODEL}/pipe
 
 # Each entry: (search_query, category_slug, category_label, max_articles)
 CATEGORIES = [
+    # --- Original 6 ---
     ("O365 Outlook email affiliation deactivation", "microsoft365", "O365", 25),
     ("NetID activation expiry password reset", "iam", "NetID", 20),
     ("Duo MFA reactivation setup bypass passcode", "iam", "Duo_MFA", 20),
     ("GlobalProtect VPN setup troubleshooting", "helpdesk", "VPN", 15),
     ("eduroam UWNet WiFi wireless setup", "ns", "WiFi", 15),
     ("printing campus printers quota WiscPrint", "helpdesk", "Printing", 15),
+
+    # --- Tier 1: Highest ticket volume ---
+    ("Canvas LMS course access quiz grades student", "learn@uw", "Canvas", 20),
+    ("Microsoft Office install download license activation", "microsoft365", "Office_Install", 20),
+    ("Adobe Creative Cloud activation license student", "helpdesk", "Adobe_CC", 15),
+    ("phishing email security URL defense suspicious", "security", "Phishing", 15),
+    ("Zoom getting started meeting recording troubleshoot", "helpdesk", "Zoom", 20),
+    ("Box OneDrive Google Drive storage quota file sharing", "helpdesk", "Cloud_Storage", 20),
+    ("campus software library download SPSS SAS license", "helpdesk", "Software_Library", 15),
+    ("antivirus endpoint protection Trend Micro Windows Defender", "security", "Antivirus", 15),
+
+    # --- Tier 2: Moderate volume ---
+    ("remote desktop RDS connection access campus", "helpdesk", "Remote_Desktop", 15),
+    ("Microsoft Teams meeting chat cache troubleshoot", "microsoft365", "Teams", 15),
+    ("macOS Windows OS update troubleshoot setup", "helpdesk", "OS_Support", 15),
+    ("computer repair loaner laptop DoIT lending program", "helpdesk", "Computer_Repair", 10),
+    ("Student Center SIS enrollment transcript registration", "helpdesk", "Student_Center", 15),
+    ("Cisco VoIP campus phone voicemail PIN setup", "telecom", "VoIP", 15),
+    ("SPSS SAS statistical software install Mac Windows", "helpdesk", "Stats_Software", 10),
+
+    # --- Tier 3: Specialized ---
+    ("ResearchDrive research data storage quota", "helpdesk", "ResearchDrive", 10),
+    ("Workspace ONE device enrollment MDM macOS Windows", "helpdesk", "Endpoint_Mgmt", 10),
+    ("classroom AV projector audio video technology support", "helpdesk", "Classroom_AV", 10),
+    ("Kaltura lecture capture video upload Canvas media", "learn@uw", "Kaltura", 10),
+    ("DoIT web hosting WordPress domain database", "helpdesk", "Web_Hosting", 10),
+    ("Campus Active Directory AD join permissions IAM", "iam", "Active_Directory", 10),
+    ("data classification sensitive restricted policy encryption", "security", "Data_Policy", 10),
+    ("Cisco Webex video conferencing hybrid room meeting", "telecom", "Webex", 10),
+    ("Google Workspace Gmail Drive Meet UW-Madison", "helpdesk", "Google_Workspace", 15),
 ]
 
 
-# ---------------------------------------------------------------------------
 # HTML parsing helpers
-# ---------------------------------------------------------------------------
 
 class _DocBodyExtractor(HTMLParser):
     """Extracts text inside class="doc-body", skipping script/style tags."""
@@ -116,9 +133,7 @@ def _extract_group_from_canonical(canonical: str) -> str:
     return m.group(1) if m else ""
 
 
-# ---------------------------------------------------------------------------
 # Search: get article IDs for a query
-# ---------------------------------------------------------------------------
 
 def _search_article_ids(query: str, limit: int = 50) -> list[int]:
     """Return article IDs from KB search (table format, server-rendered)."""
@@ -143,9 +158,7 @@ def _search_article_ids(query: str, limit: int = 50) -> list[int]:
     return result
 
 
-# ---------------------------------------------------------------------------
 # Article fetch + parse
-# ---------------------------------------------------------------------------
 
 def _fetch_article(article_id: int, category: str) -> Optional[dict]:
     url = f"{BASE_URL}/{article_id}"
@@ -177,9 +190,7 @@ def _fetch_article(article_id: int, category: str) -> Optional[dict]:
     }
 
 
-# ---------------------------------------------------------------------------
 # Scrape pipeline
-# ---------------------------------------------------------------------------
 
 def scrape_all() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -216,9 +227,7 @@ def scrape_all() -> None:
     log.info("Scraping complete. Total articles: %d", total_written)
 
 
-# ---------------------------------------------------------------------------
 # HuggingFace Inference API — embeddings
-# ---------------------------------------------------------------------------
 
 def _hf_token() -> str:
     token = os.environ.get("HF_TOKEN") or os.environ.get("HUGGINGFACE_API_KEY", "")
@@ -259,9 +268,7 @@ def embed_query(text: str) -> List[float]:
     return _embed_batch([text])[0]
 
 
-# ---------------------------------------------------------------------------
 # ChromaDB index pipeline
-# ---------------------------------------------------------------------------
 
 def index_all() -> None:
     try:
@@ -326,9 +333,7 @@ def index_all() -> None:
     log.info("Indexing complete. Collection count: %d", collection.count())
 
 
-# ---------------------------------------------------------------------------
 # Entry point
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "all"

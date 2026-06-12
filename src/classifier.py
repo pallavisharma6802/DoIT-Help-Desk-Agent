@@ -1,13 +1,3 @@
-"""
-Query complexity classifier using Groq Llama 3.2 3B.
-
-All Groq calls go through groq_client.groq_chat — never the raw SDK.
-
-Simple  = single-step factual lookup (password reset, how to connect to VPN).
-Complex = multi-condition, involves timeline, account state change, or
-          follow-up troubleshooting likely.
-"""
-
 import json
 import logging
 from typing import Dict, Any
@@ -18,8 +8,6 @@ log = logging.getLogger(__name__)
 
 _MODEL = "llama-3.1-8b-instant"
 
-# Static system prompt — byte-identical every call for prefix cache efficiency.
-# Do NOT modify this string at runtime.
 _SYSTEM_PROMPT = (
     "You are a query complexity classifier for a UW-Madison IT support system. "
     "Classify the user's IT support query as either 'simple' or 'complex'.\n\n"
@@ -36,16 +24,6 @@ _SYSTEM_PROMPT = (
 
 
 def classify_query(query: str) -> Dict[str, Any]:
-    """
-    Classify a user query as simple or complex.
-
-    Returns:
-        {"complexity": "simple"|"complex", "confidence": float, "reasoning": str}
-
-    Raises:
-        EnvironmentError  – GROQ_API_KEY not set
-        ValueError        – model returned unparseable JSON
-    """
     messages = [
         {"role": "system", "content": _SYSTEM_PROMPT},
         {"role": "user", "content": query},
@@ -82,8 +60,10 @@ def classify_query(query: str) -> Dict[str, Any]:
         raise ValueError(f"Unexpected complexity value: {complexity!r}")
 
     return {
-        "complexity": complexity,
-        "confidence": float(parsed.get("confidence", 0.0)),
-        "reasoning": str(parsed.get("reasoning", "")),
-        "latency_ms": result["latency_ms"],
+        "complexity":    complexity,
+        "confidence":    float(parsed.get("confidence", 0.0)),
+        "reasoning":     str(parsed.get("reasoning", "")),
+        "latency_ms":    result["latency_ms"],
+        "input_tokens":  result["input_tokens"],
+        "output_tokens": result["output_tokens"],
     }
