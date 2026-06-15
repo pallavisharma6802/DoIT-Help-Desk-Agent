@@ -10,6 +10,7 @@ import groq
 log = logging.getLogger(__name__)
 
 _TOKEN_WINDOW_SECONDS = 60
+# Keep this comfortably below the hard provider limit so short bursts do not trip 429s.
 _TOKEN_WINDOW_LIMIT = 14_000  # conservative ceiling; Groq free tier is 6k TPM per model
 
 class RateLimitWarning(Exception):
@@ -19,6 +20,7 @@ class RateLimitWarning(Exception):
 class _TokenGuard:
     def __init__(self):
         self._lock = threading.Lock()
+        # Store only successful calls in a rolling one-minute window.
         self._window: deque = deque()  # (timestamp, actual_tokens)
 
     def check(self, estimated_tokens: int) -> None:
@@ -51,6 +53,7 @@ def _enforce_gap() -> None:
     global _last_call_time
     with _call_lock:
         now = time.monotonic()
+        # Serialize callers and leave a small pause between requests to avoid bursty 429s.
         wait = _MIN_GAP_SECONDS - (now - _last_call_time)
         if wait > 0:
             time.sleep(wait)
@@ -73,11 +76,13 @@ def groq_chat(
     max_tokens: int = 512,
     temperature: float = 0.0,
 ) -> Dict[str, Any]:
+    # Estimate prompt size up front so we can fail fast before sending the request.
     estimated_input = sum(len(m.get("content", "")) for m in messages) // 4
     _token_guard.check(estimated_input)
 
     client = _get_client()
 
+    # Retry only transient failures; daily quota exhaustion should surface immediately.
     MAX_RETRIES = 3
     base_delay = 2.0
 
@@ -126,7 +131,8 @@ def groq_chat(
         output_tokens = usage.completion_tokens if usage else 0
         content = response.choices[0].message.content or ""
 
-        _token_guard.record(input_tokens)  # track actuals, not estimates
+        # Record actual prompt usage, not the estimate, so the rolling window stays accurate.
+        _token_guard.record(input_tokens)
 
         log.info(
             "groq_chat | model=%s input_tokens=%d output_tokens=%d latency_ms=%.0f",
@@ -150,6 +156,7 @@ def groq_stream(
     max_tokens: int = 512,
     temperature: float = 0.0,
 ):
+    # Streaming still consumes prompt tokens up front, so it uses the same guard as chat.
     estimated_input = sum(len(m.get("content", "")) for m in messages) // 4
     _token_guard.check(estimated_input)
     _enforce_gap()
@@ -166,7 +173,9 @@ def groq_stream(
         for chunk in stream:
             delta = chunk.choices[0].delta.content
             if delta:
+                # Streaming chunks do not expose final usage here, so approximate from text length.
                 total_output += len(delta) // 4
                 yield delta
+    # Approximate total tokens so streamed calls also count against the minute window.
     _token_guard.record(estimated_input + total_output)
     log.info("groq_stream | model=%s latency_ms=%.0f", model, (time.monotonic() - t0) * 1000)
