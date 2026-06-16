@@ -27,10 +27,7 @@ from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-# ---------------------------------------------------------------------------
 # Ground-truth test cases  (realistic query phrasing throughout)
-# ---------------------------------------------------------------------------
-
 TEST_CASES = [
     # ── NetID ────────────────────────────────────────────────────────────────
     {
@@ -751,10 +748,7 @@ TEST_CASES = [
 ]
 
 
-# ---------------------------------------------------------------------------
 # Evaluation runner
-# ---------------------------------------------------------------------------
-
 def run_evaluation(top_k: int = 5, verbose: bool = True) -> dict:
     try:
         from retriever import retrieve
@@ -839,10 +833,7 @@ def _print_report(results, cat_stats, n_total, n_passed, recall, top_k):
     print(f"\n{'═'*72}\n")
 
 
-# ---------------------------------------------------------------------------
 # pytest interface
-# ---------------------------------------------------------------------------
-
 def _make_pytest_test(tc):
     import pytest
 
@@ -869,10 +860,7 @@ for _tc in TEST_CASES:
     globals()[_fn_name] = _make_pytest_test(_tc)
 
 
-# ---------------------------------------------------------------------------
 # CLI entry point
-# ---------------------------------------------------------------------------
-
 if __name__ == "__main__":
     import argparse
 

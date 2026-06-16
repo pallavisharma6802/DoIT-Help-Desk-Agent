@@ -21,11 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent / "src"))
 from retriever import build_graph
 from pyvis.network import Network
 
-
-# ---------------------------------------------------------------------------
 # Maximally-distinct colors — evenly spaced hues via HSL
-# ---------------------------------------------------------------------------
-
 def _build_palette(categories: list) -> dict:
     """
     Assign one color per category by distributing hues evenly around the color
@@ -40,11 +36,7 @@ def _build_palette(categories: list) -> dict:
         palette[cat] = f"#{int(r*255):02X}{int(g*255):02X}{int(b*255):02X}"
     return palette
 
-
-# ---------------------------------------------------------------------------
 # Build graph
-# ---------------------------------------------------------------------------
-
 G = build_graph()
 
 all_cats = sorted(
@@ -57,11 +49,7 @@ PALETTE = _build_palette(all_cats)
 def _cat_color(cat: str) -> str:
     return PALETTE.get(cat, "#aaaaaa")
 
-
-# ---------------------------------------------------------------------------
 # pyvis Network
-# ---------------------------------------------------------------------------
-
 net = Network(
     height="100vh",
     width="100%",
@@ -140,17 +128,11 @@ for u, v, data in G.edges(data=True):
     )
 
 
-# ---------------------------------------------------------------------------
 # Generate base HTML
-# ---------------------------------------------------------------------------
-
 html = net.generate_html()
 
 
-# ---------------------------------------------------------------------------
 # Stats
-# ---------------------------------------------------------------------------
-
 n_nodes     = G.number_of_nodes()
 n_edges     = G.number_of_edges()
 cross_edges = sum(
@@ -159,10 +141,7 @@ cross_edges = sum(
 )
 
 
-# ---------------------------------------------------------------------------
 # Legend chips (pre-computed to keep f-string clean)
-# ---------------------------------------------------------------------------
-
 legend_chips_html = "\n".join(
     f'<div class="legend-chip" onclick="filterCategory(\'{cat}\')">'
     f'  <div style="width:9px;height:9px;border-radius:50%;'
@@ -173,11 +152,8 @@ legend_chips_html = "\n".join(
 )
 
 
-# ---------------------------------------------------------------------------
 # JavaScript — click-to-highlight + category filter + info panel
 # Injected AFTER pyvis's drawGraph() runs, so `network` is already global.
-# ---------------------------------------------------------------------------
-
 node_meta_js = json.dumps(node_meta, ensure_ascii=False)
 
 INTERACT_JS = (
@@ -326,10 +302,7 @@ INTERACT_JS = (
 )
 
 
-# ---------------------------------------------------------------------------
 # UI block (CSS + HTML panels + JS)
-# ---------------------------------------------------------------------------
-
 UI_BLOCK = f"""
 <style>
   body {{ margin: 0; overflow: hidden; font-family: sans-serif; }}

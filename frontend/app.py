@@ -17,19 +17,12 @@ import streamlit as st
 
 API_BASE = os.environ.get("API_BASE_URL", "http://localhost:8000")
 
-
-# ---------------------------------------------------------------------------
 # URL param → mode
-# ---------------------------------------------------------------------------
-
 params = st.query_params
 mode = params.get("mode", "student")
 is_agent = mode == "agent"
 
-# ---------------------------------------------------------------------------
 # Page config
-# ---------------------------------------------------------------------------
-
 st.set_page_config(
     page_title="DoIT KB Assistant" if not is_agent else "DoIT Agent Assist",
     page_icon="🎓" if not is_agent else "🛠️",
@@ -37,10 +30,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ---------------------------------------------------------------------------
 # Styling
-# ---------------------------------------------------------------------------
-
 ACCENT = "#c5050c"   # UW-Madison red
 
 st.markdown(f"""
@@ -68,10 +58,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------------------------------------------------------------------
 # Header
-# ---------------------------------------------------------------------------
-
 if is_agent:
     st.markdown("""
     <div class="header">
@@ -86,19 +73,13 @@ else:
       <p>Ask any UW-Madison IT question — powered by the Knowledge Base</p>
     </div>""", unsafe_allow_html=True)
 
-# ---------------------------------------------------------------------------
 # Session state
-# ---------------------------------------------------------------------------
-
 if "session_id" not in st.session_state:
     st.session_state.session_id = str(uuid.uuid4())
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# ---------------------------------------------------------------------------
 # Chat history
-# ---------------------------------------------------------------------------
-
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
@@ -121,10 +102,7 @@ for msg in st.session_state.messages:
             complexity_label = f"· {m.get('complexity','')}" if m.get("complexity") else ""
             st.caption(f"Turn {m.get('turn','-')} {complexity_label} · session `{st.session_state.session_id[:8]}`")
 
-# ---------------------------------------------------------------------------
 # Input
-# ---------------------------------------------------------------------------
-
 placeholder = (
     "Describe the issue you're troubleshooting..." if is_agent
     else "Ask a UW-Madison IT question..."
@@ -242,10 +220,7 @@ if query := st.chat_input(placeholder):
                 "meta": meta,
             })
 
-# ---------------------------------------------------------------------------
 # Sidebar
-# ---------------------------------------------------------------------------
-
 with st.sidebar:
     st.markdown("### Mode")
     col1, col2 = st.columns(2)

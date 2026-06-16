@@ -635,7 +635,8 @@ function highlightFilter(filter) {
   var isHighlighted = false;
   var panel = document.getElementById('node-info-panel');
 
-  // ---- Info panel helpers --------------------------------------------------
+
+  // Info panel helpers
   function showPanel(nodeId) {
     var m = NODE_META[String(nodeId)];
     if (!m) return;
@@ -656,7 +657,7 @@ function highlightFilter(filter) {
     panel.innerHTML = '';
   }
 
-  // ---- Apply highlight for a single node + its neighbors ------------------
+  // Apply highlight for a single node + its neighbors
   function highlightNode(clickedId) {
     var neighbors    = new Set(network.getConnectedNodes(clickedId));
     neighbors.add(String(clickedId));
@@ -680,7 +681,7 @@ function highlightFilter(filter) {
     showPanel(clickedId);
   }
 
-  // ---- Reset to original state --------------------------------------------
+  // Reset to original state
   function resetAll() {
     network.body.data.nodes.update(
       allNodeIds.map(function(id) {
@@ -695,8 +696,6 @@ function highlightFilter(filter) {
     isHighlighted = false;
     hidePanel();
   }
-
-  // ---- Click handler -------------------------------------------------------
   network.on('click', function(params) {
     if (params.nodes.length > 0) {
       highlightNode(params.nodes[0]);
@@ -705,7 +704,7 @@ function highlightFilter(filter) {
     }
   });
 
-  // ---- Category filter (called from legend chips) -------------------------
+  // Category filter (called from legend chips)
   window.filterCategory = function(cat) {
     var catSet = new Set(
       allNodeIds.filter(function(id) {
@@ -743,7 +742,7 @@ function highlightFilter(filter) {
     });
   };
 
-  // ---- Reset button -------------------------------------------------------
+  // Reset button
   window.resetGraph = function() { resetAll(); };
 
 })();

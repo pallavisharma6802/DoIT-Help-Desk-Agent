@@ -84,11 +84,9 @@ def log_full_session(
         ],
     }
 
-    # -----------------------------------------------------------------------
     # Reconstruct a plausible timeline working backwards from now.
     # Each user message lasted ttft_ms (wall-clock time in the FastAPI handler).
     # We assume ~10s gap between consecutive user messages.
-    # -----------------------------------------------------------------------
     _MSG_GAP_MS = 10_000  # assumed think-time between messages
     now_dt = datetime.now(timezone.utc)
 
@@ -106,13 +104,11 @@ def log_full_session(
     for msg_idx, (td, (msg_start_t, msg_end_t)) in enumerate(
         zip(turns_data, msg_windows), start=1
     ):
-        # ------------------------------------------------------------------
         # Parent span — one per user message, covers the full response time.
         # All classify/iteration generations are nested under this span.
         # The "Latency" shown in Langfuse on this span = ttft_ms = total
         # round-trip time for that user message (equivalent to TTFT in
         # non-streaming mode).
-        # ------------------------------------------------------------------
         parent_span_id = str(uuid.uuid4())
         batch.append({
             "id":        str(uuid.uuid4()),
@@ -141,10 +137,8 @@ def log_full_session(
             },
         })
 
-        # ------------------------------------------------------------------
         # Classifier generation — child of the parent span above.
         # Latency = time for llama-3.1-8b to return complexity label.
-        # ------------------------------------------------------------------
         clf_latency = td.get("clf_latency_ms", 300)
         clf_start   = msg_start_t
         clf_end     = clf_start + timedelta(milliseconds=clf_latency)
@@ -178,11 +172,9 @@ def log_full_session(
             },
         })
 
-        # ------------------------------------------------------------------
         # One generation per internal retrieve→generate iteration.
         # Each spans from right after the previous step ends.
         # Latency = time for llama-3.3-70b to return that iteration's answer.
-        # ------------------------------------------------------------------
         cursor = clf_end
         for it in td.get("graph_trace", []):
             it_latency = it.get("latency_ms", 0)
