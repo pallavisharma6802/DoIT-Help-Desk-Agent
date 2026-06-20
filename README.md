@@ -1,6 +1,6 @@
 # DoIT KB Agentic Assistant
 
-An agentic RAG system that answers UW-Madison IT support questions using the [DoIT Knowledge Base](https://kb.wisc.edu). Built with a LangGraph pipeline, ChromaDB vector search, and a Streamlit chat UI.
+An agentic RAG system that answers UW-Madison IT support questions using the [DoIT Knowledge Base](https://kb.wisc.edu). Built with a LangGraph pipeline, ChromaDB vector search, and a React + Vite chat UI.
 
 ---
 
@@ -38,7 +38,7 @@ Delta context injection keeps token usage low across turns: already-seen KB arti
 | Knowledge graph | NetworkX - semantic similarity edges (threshold ≥ 0.60)                |
 | Orchestration   | LangGraph                                                              |
 | Backend         | FastAPI + uvicorn                                                      |
-| Frontend        | Streamlit (student mode + agent-assist mode)                           |
+| Frontend        | React + Vite (student mode + agent-assist streaming mode)              |
 | Observability   | Langfuse                                                               |
 | Visualization   | pyvis - interactive HTML graph                                         |
 
@@ -71,11 +71,11 @@ python src/ingest.py index    # index only (requires HF_TOKEN)
 
 ```bash
 uvicorn api.main:app --reload          # backend on :8000
-streamlit run frontend/app.py          # frontend on :8501
+cd react-frontend && npm install && npm run dev   # frontend on :5173
 ```
 
-Student mode: `http://localhost:8501`  
-Agent-assist mode (streaming): `http://localhost:8501?mode=agent`
+Student mode: `http://localhost:5173`  
+Agent-assist mode (streaming): `http://localhost:5173?mode=agent`
 
 **Visualize the knowledge graph:**
 
