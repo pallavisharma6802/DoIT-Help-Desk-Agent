@@ -1,0 +1,7 @@
+{
+  "id": "80752",
+  "title": "MFA-Duo (multi-factor authentication)",
+  "body": "Multi-factor authentication is part of the new UW–Madison login process that verifies your identity. It combines something you know (your NetID and password) with something you have (smartphone, token/fob or tablet) preventing anyone but you from logging into a system. UW-Madison has partnered with Duo to provide this service. You will now need to log in by: Entering your NetID and password, and Confirming your login with the Duo app on your device.",
+  "category": "Duo_MFA",
+  "url": "https://kb.wisc.edu/iam/80752"
+}

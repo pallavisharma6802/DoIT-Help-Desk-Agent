@@ -1,0 +1,7 @@
+{
+  "id": "147614",
+  "title": "AV Troubleshooting",
+  "body": "Troubleshooting If you have no audio from your computer to the room speakers make sure you have selected the correct output on your device. On your Mac click the Control Center icon, then Sound , and finally select the correct output device (it will be something like HMDI, Crestron, Extron, CR 2111). If you are plugged in to one of the displays and all you see is a desktop background you need to turn on mirroring . Tap Command + F1 or select System Preferences -> Displays . Control+click on the larger screen and select Mirror for Built-in Display . If you are only seeing your desktop wallpaper on screens you are connected to on a Mac, type command+F1 to toggle screen mirroring.",
+  "category": "OS_Support",
+  "url": "https://kb.wisc.edu/sjmc/147614"
+}

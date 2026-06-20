@@ -1,0 +1,7 @@
+{
+  "id": "23118",
+  "title": "Synchronize NetID to Windows Computer When Off Campus",
+  "body": "To synchronize your NetID password with campus active directory: Select a program from your desktop or programs using the Shift+Right Hand Mouse button. From the pop out menu select \"Run as different user\" At the Windows Security login window for user name input your NetID and for password your new password, note at Domain it should appears as \"Domain:AD\", if \"AD\" is not shown for the Domain, change your NetID to \"AD\\N Select \"OK\". This action will force your remote computer to connect to the campus Active Directory and synchronize your new password with the computer. How to Video (MP4 viewer required) ResyncPassword.mp4",
+  "category": "NetID",
+  "url": "https://kb.wisc.edu/dermatology/23118"
+}

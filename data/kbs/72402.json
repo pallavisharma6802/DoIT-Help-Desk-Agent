@@ -1,0 +1,7 @@
+{
+  "id": "72402",
+  "title": "Cisco VoIP - Changing your telephone PIN",
+  "body": "Your PIN number is used to log services accessed from your desk phone such as the personal directory and extension mobility for contact center agents. You must be logged into the Self Care Portal. For information about logging into the Self Care Portal, see Cisco VoIP - Self Care Portal . Please note this does NOT change your voicemail PIN . To change your voicemail PIN, see Cisco VoIP - Changing Voicemail PIN 1. From the top navigation bar, select the General Settings button. 2. Expand the Phone Services PIN section 3. Type the new PIN in the New Phone PIN and Confirm New Phone PIN fields. Try to use a unique PIN that does not have repeating numbers, is not the same as the phone number, and is different than other PINs that you use. If you need further help, please contact the DoIT Help Desk for assistance.",
+  "category": "VoIP",
+  "url": "https://kb.wisc.edu/vs/72402"
+}

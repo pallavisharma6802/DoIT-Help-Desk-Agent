@@ -1,0 +1,7 @@
+{
+  "id": "81616",
+  "title": "Cisco VoIP - Setting a out-of-office greeting in the Voicemail Portal",
+  "body": "You must be first logged into the portal . Please note that you must be either on a UW-Madison campus network or using VPN to access the portal. Portal access is only for accounts assigned to an individual person. For more information, see Cisco VoIP - Voicemail Portal Sign in and Overview Please note that a caller will still be allowed to leave a message. Only voicemail administrators can set the system to prevent a caller from leaving a message. Please let DoIT Network Applications know at least 1 week in advance if you would like to prevent callers from leaving a message by creating a DoIT Help Desk case. From the Greetings drop-down menu: 1. Select View Greetings. 2. Select the A lternate greeting by clicking on the underlined word. 3. To enable or disable the greeting select the appropriate radio button. You may also select an end date and time. After the end date, your greeting will return to the standard greeting. 4. The greeting can be recorded by using Media Player. For more information on using the Cisco Media Player, see Cisco VoIP - Voicemail Media Player 5. Select the Save button. If you need further help, please contact the DoIT Help Desk for assistance.",
+  "category": "VoIP",
+  "url": "https://kb.wisc.edu/vs/81616"
+}

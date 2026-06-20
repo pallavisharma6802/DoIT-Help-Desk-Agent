@@ -1,0 +1,7 @@
+{
+  "id": "135360",
+  "title": "Faculty and Staff macOS Operating System Updates",
+  "body": "When a new update is ready to be installed a message like the screenshot below will pop up. You may Snooze or Upgrade . You can Snooze the update until the deadline at the end of the message, at which time the update will be installed automatically. You should install the update before the deadline because when it is forcefully installed you will not be given the opportunity to postpone, or save open files before the forced reboot. Shortly after you click “Upgrade” you will get a notification like the image below, informing you your computer will be restarting soon. You can restart immediately by clicking “Restart” in the notification. Be sure to save any open documents before clicking Restart . If postpone the update until the deadline it will be forcefully installed. You will not be given the opportunity to postpone, or save open files before the forced reboot.",
+  "category": "OS_Support",
+  "url": "https://kb.wisc.edu/sjmc/135360"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "134306",
+  "title": "GlobalProtect VPN - Switching to the SMPH VPN Portal (Windows OS)",
+  "body": "Note: Before attempting to switch from the Campus VPN portal, to the SMPH VPN portal.  Confirm with SMPH Shared Services IT ( support@med.wisc.edu ) that your NetID has been enabled for access. Most staff machines should have GlobalProtect already installed. After logging into GlobalProtect, run any updates that prompt. It's best to have the latest version. When GlobalProtect has completed the update, you will need to re-login. Step-by-step guide In your taskbar, click “Show hidden icons” (up arrow symbol) then select GlobalProtect (white earth globe icon) . Click the sandwich menu (3 dashes upper right corner) , then choose Settings . In the Connections tab, click the + button, enter the new portal smph.vpn.wisc.edu After adding the new portal, close out the GlobalProtect Settings window. Reopen GlobalProtect (from the taskbar) . Under the Portal section, click the dropdown menu and choose smph.vpn.wisc.edu . After logging in, you should now be connected to the new SMPH VPN portal. Related articles Changing GlobalProtect to SMPH VPN (PC) GlobalProtect VPN - Pre-Login (Windows OS) fix for multiple icons in task tray GlobalProtect - Connecting on Windows PC GlobalProtect VPN - Pre-login (Windows OS) GlobalProtect VPN - Switching to the SMPH VPN Portal (Windows OS)",
+  "category": "VPN",
+  "url": "https://kb.wisc.edu/smph/134306"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "141214",
+  "title": "GlobalProtect - Add the smphaf.vpn.wisc.edu portal - Windows OS",
+  "body": "Open the GlobalProtect client. Select the three bar menu (upper right corner), and choose Settings In the Settings window, within the General tab, click the Add button, type in the following portal address: smphaf.vpn.wisc.edu , then click Save Close the Settings window, then re-open GlobalProtect. If you have more than one portal listed in GlobalProtect, choose smphaf.vpn.wisc.edu from the drop down menu. Double check that you have the correct portal, and sign in via NetID. Enter the number ‘ 1 ’ and click the Sign In button to initiate a DUO push. After accepting the DUO push from your device, you should be connected. NOTE: Health Link users - If after connecting to the VPN (via GlobalProtect) you are not able to load web pages (no internet traffic) then likely your computer has not been fully enrolled in Workspace ONE.  There can be a delay before all the pieces (from Workspace ONE) are in place, and ready for the Citrix login.  Please be patient. For assistance with VPN issues, contact SMPH Shared Services IT support@med.wisc.edu",
+  "category": "VPN",
+  "url": "https://kb.wisc.edu/smph/141214"
+}

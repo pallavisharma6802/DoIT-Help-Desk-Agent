@@ -1,0 +1,7 @@
+{
+  "id": "120384",
+  "title": "Renew SAS Licensing",
+  "body": "Navigate to the Campus Software Library and find SAS in the software list. Download the latest SID files from the list. You do not need to download the larger installation file, you only need the SID files. Extract the SID files into another folder on your computer. You should see a series of text files when done. Open the Renew SAS Software 9.4 application (Programs > SAS > Renew SAS Software 9.4). You may be required to provide administrator credentials. If you do not have administrator credentials, you will need to work with your local IT help desk to continue. Select a language and click OK. Click Next. Click Browse. Navigate to the folder where you extracted the SID files from step 3 and select the appropriate SID file for your SAS installation. If you followed the instructions on the SAS Installation Guide for Windows , you will need to select the file starting with SAS94 and ending with _Win_X64_Wrkstn (e.g., SAS94_9CQ32K_70090197_Win_X64_Wrkstn.txt). Ensure you've selected the correct SID file by checking the expiration date listed and the platform matches your setup. Click Next. Click Start. When the renewal step completes, click Next. Click Finish. Your SAS installation is now updated with the latest SID file and should continue to work until the expiration date listed in the SID file.",
+  "category": "Software_Library",
+  "url": "https://kb.wisc.edu/msndata/120384"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "117266",
+  "title": "MFA-Duo - NSURLErrorDomain -999",
+  "body": "The NSURLErrorDomain -999 ( and sometimes -1003, -1004, or -1200 ) message happens semi-frequently during Duo pushes. The error has only been reported on iOS devices . The error happens when there is a network error within the app during a push. A troubleshooting step to resolve the issue is to toggle wifi and use cellular data, or to switch to a different wifi network if available. Duo's Documentation: https://help.duo.com/s/article/4010?language=en_US",
+  "category": "Duo_MFA",
+  "url": "https://kb.wisc.edu/iam/117266"
+}

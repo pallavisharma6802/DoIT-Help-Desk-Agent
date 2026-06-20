@@ -1,0 +1,7 @@
+{
+  "id": "281",
+  "title": "Microsoft 365 - Email Virus Protection",
+  "body": "The message contains a known self-propogating virus Messages containing known self-propogating viruses will be discarded and no notification will be sent to the recipient or the sender of this action. All other detected viruses, trojans or other malware Messages that have an attachment that is determined to be a virus, trojan or other type of malware will be handled as follows: The message subject will be tagged with [VIRUS] The message spam score will be raised so that the message will be put in the user's Junk Mail folder if the user has properly configured their Junk Mail filter ( Microsoft 365 - Learn about junk email and phishing ) The attachment will be removed and replaced with the following text warning message: The original content of this message part has been replaced by this text because it tested positive for the following virus(es): [Name of virus or reason for removal] Executable attachments All other executable attachments not determined to be viruses are protected and may be inaccessible. Please refer to Microsoft 365 - Unable to view/open attachment for more information.",
+  "category": "Antivirus",
+  "url": "https://kb.wisc.edu/microsoft365/281"
+}

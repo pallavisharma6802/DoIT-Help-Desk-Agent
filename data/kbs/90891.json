@@ -1,0 +1,7 @@
+{
+  "id": "90891",
+  "title": "Install Microsoft Teams - from Outlook Web App - Windows",
+  "body": "-- Log into your email via the Outlook Web App. https://email.wisc.edu/ -- From the email page click on the app launcher button (upper left hand corner) . -- Select the Teams icon from the Apps Menu. -- Next, click the three dot menu (upper right corner) next to your avatar, then select \" Download the desktop app \" -- Click the \" Download Microsoft Teams for Windows \" button -- After the download finishes, click and run MSTeamsSetup.exe to install the software. -- When prompted use your @wisc.edu account to continue -- Enter your NetID credentials on the UW-Madison Login (SSO - Single Sign On) page. Note: You may also be prompted for MFA/DUO authentication. -- After authenticating, the Microsoft Teams desktop app should open, and be logged into your account. Also see: Install Microsoft Teams - from Microsoft https://kb.wisc.edu/124564 Download Microsoft Teams (direct link) https://www.microsoft.com/en-us/microsoft-teams/download-app",
+  "category": "Teams",
+  "url": "https://kb.wisc.edu/smph/90891"
+}

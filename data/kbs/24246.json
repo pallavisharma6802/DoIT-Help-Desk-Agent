@@ -1,0 +1,7 @@
+{
+  "id": "24246",
+  "title": "Multiple Meeting Responses From Outlook and Office 365 Calendar",
+  "body": "There is technical information that supports a corrupt account on an phone using the device native email/calendar could be the source of the problem when configured to connect to Microsoft Exchange. Deleting the account, updating the iPhone to the current iOS release and re-adding the account will fix the problem. The technical underpinning to this is linked to ActiveSync, deleting and re-adding the accont has resolved the problem for users in our environment sending meeting invites from the UW (.wisc.edu) domain to the UWHC (.uwhealth.org) domain. This problem has not been reported on user devices configured for the Microsoft Outlook App. Consider deleting the user profile configured for .wisc.edu or .uwhealth.org from the native client and installing Microsoft Outlook App.",
+  "category": "O365",
+  "url": "https://kb.wisc.edu/dermatology/24246"
+}

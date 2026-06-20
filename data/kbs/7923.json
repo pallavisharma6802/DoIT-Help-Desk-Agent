@@ -1,0 +1,7 @@
+{
+  "id": "7923",
+  "title": "Campus Active Directory - Moving a Newly Joined Machine to Your Organizational Unit",
+  "body": "The temporary location for newly-joined machines are: ou=computers,ou=orgUnits,dc=ad,dc=wisc,dc=edu (Production) ou=computers,ou=orgUnits,dc=qa,dc=ad,dc=wisc,dc=edu (QA) ou=computers,ou=orgUnits,dc=ite,dc=ad,dc=wisc,dc=edu (ITE) The Active Directory Users and Computers management tool should be used to move the machine. See Active Directory - Remote Administration Tools See Also Active Directory - Remote Administration Tools",
+  "category": "Active_Directory",
+  "url": "https://kb.wisc.edu/iam/7923"
+}

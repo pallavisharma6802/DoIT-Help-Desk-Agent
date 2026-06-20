@@ -1,0 +1,7 @@
+{
+  "id": "128742",
+  "title": "Web Hosting - Web Site Monitoring",
+  "body": "The DoIT Network Control Center has relevant contact information and handling documents for when alarms and notifications are observed for the Web Hosting Service. DoIT Web Hosting has global monitoring in place for critical services on our platforms but we do not specifically monitor each customer's website. These services include: Web Servers HTTP/HTTPS PHP, ASP.NET, Java, RoR, Node.js, etc. Plesk (Web Hosting Automation Software) NetID Login TLS/SSL Certificate renewals MySQL Oracle There are many website monitoring services available that you are free to use and we can also work with customers to craft some basic monitors provided by DoIT's Monitoring Team In many cases, outages may occur that are core dependencies of DoIT Web Hosting, such as power, network, storage, compute, etc. If a campus outage or specific outage to DoIT Web Hosting is identified it will be posted and status provided on: https://outages.doit.wisc.edu Any questions? Contact webhosting@doit.wisc.edu",
+  "category": "Web_Hosting",
+  "url": "https://kb.wisc.edu/webhosting/128742"
+}

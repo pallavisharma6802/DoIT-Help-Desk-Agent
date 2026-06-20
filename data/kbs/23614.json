@@ -1,0 +1,7 @@
+{
+  "id": "23614",
+  "title": "UW-Madison Google Workspace - Access Google Workspace using a Microsoft 365 Service Account",
+  "body": "Domain Activation In order for a service account to access the Google Workspace service, the department's Microsoft 365 domain will need to enter into UW-Madison's privacy agreement with Google Workspace. If your domain is not enabled in Google Workspace, you will see the following error when trying to log in with a Microsoft 365 service account: \"Your domain is not active for Google Workspace applications. Please contact you local domain administrator.\" Contact your local domain administrator to find out if your domain is enabled for Google Workspace. Not sure who your administrator is? Contact the DoIT Help Desk to find out. Accessing Google Workspace through Service Accounts See UW-Madison Google Workspace - Log in . Changing Google Workspace Display Names Only domain administrators and authorized admins are able to manage these settings. If you need to change your display name, please contact with the Help Desk . Service Account Storage Quota Limits Service accounts are not eligible for storage in Google Drive. Individuals who would like to preserve collaborative files are encouraged to use shared drives instead. Learn more .",
+  "category": "Google_Workspace",
+  "url": "https://kb.wisc.edu/googleapps/23614"
+}

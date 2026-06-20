@@ -1,0 +1,7 @@
+{
+  "id": "131582",
+  "title": "Install Domain Printer from a Law School Windows Workstation",
+  "body": "The following instructions require your computer to be on the Law wireless network, to be connected to a wired network connection, or to be connected to VPN. From your workstation, open your file browser (Windows Explorer) and type into the address bar \"\\\\law-printapp.ad.wisc.edu\" and press enter. You may need to enter a username and password: username:  ad\\NetID Password: Your @wisc.edu password Note: Make sure to use the correct \\\\ symbols The window will switch to display the available printers. Right click on the printer that you need to install and select \"Connect\" If the printer has never been installed, it may take a few minutes for the driver to install; once it's done, you will see the print queue and you can use the printer.",
+  "category": "Printing",
+  "url": "https://kb.wisc.edu/watson/131582"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "25365",
+  "title": "NetID - Too Many Failed Password Attempts Notification",
+  "body": "<Customer Name>, Your NetID password has been identified as having more than 500 failed login attempts since the last time you changed your password. Too many failed login attempts may cause your password to weaken and potentially allow the unauthorized use of your account. We encourage you to manually change your NetID password . For systems that require an InCommon Silver Certified NetID and password, you will be prompted to change your password before gaining access. Numerous failed logins can be the result of: Mistyping a password: You may be mistyping your NetID or password, causing the system to log failed authentication attempts . Misconfigured device: You may own a mobile device that is continually trying to use an incorrect password to automatically sync. Check your devices to ensure they contain the correct username and password for your account. Search the DoIT KnowledgeBase for information on how to configure your device or software. A third party may be attempting to access your account in an unauthorized manner. Contact the DoIT Help Desk at 264-HELP if you are concerned about unauthorized access to your account. If you have questions or concerns regarding this message please email DoIT.Security@doit.wisc.edu Review the following additional resources about your NetID and InCommon Silver: · Resetting a forgotten password · Changing account recovery questions DoIT Security",
+  "category": "NetID",
+  "url": "https://kb.wisc.edu/iam/25365"
+}

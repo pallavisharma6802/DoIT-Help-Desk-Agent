@@ -1,0 +1,7 @@
+{
+  "id": "134090",
+  "title": "SMPH VPN - Connecting to GlobalProtect from a Windows computer",
+  "body": "Connect to GlobalProtect VPN Press the Start Menu and type GlobalProtect, then select GlobalProtect to launch the application. If GlobalProtect is not listed, and you are on a work computer, email Shared Services IT at desktop.support@med.wisc.edu to have GlobalProtect installed. GlobalProtect is installed on all Shared Services IT managed computers as standard software. If GlobalProtect is not listed, and you are on a personal computer, see Installing the Palo Alto GlobalProtect Client (Windows) for download and installation instructions. Windows Start Menu location: If you are asked for a portal address , enter smph.vpn.wisc.edu Press Connect Verify portal address is set to smph.vpn.wisc.edu Enter your NetID and Password, then select Sign In Enter the number 1 to send a Duo Push to device, or enter a MFA-DUO passcode generated from your device app. If the connection was successful, you will see a blue globe in the System Tray (bottom right of computer). If needed, press the up arrow to show System Tray icons. To disconnect, open GlobalProtect by selecting the blue globe the System tray and select Disconnect.",
+  "category": "VPN",
+  "url": "https://kb.wisc.edu/smph/134090"
+}

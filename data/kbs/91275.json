@@ -1,0 +1,7 @@
+{
+  "id": "91275",
+  "title": "Kaltura - Known Issue - \"Kaltura Gallery\" Course Media Gallery Import Only Shows Canvas Courses in Which the User Has the Canvas Role of \"Teacher\" or \"Principal Instructor\" [UW-Madison]",
+  "body": "Affects Instructors who wish to import Kaltura course media galleries from previously taught Canvas courses in which they do not have the \"Teacher\" or \"Principal Instructor\" role. Workaround Instructors can contact the DoIT Help Desk to request escalation to the Learn@UW team. Be sure to mention which course(s) you want to import Kaltura course media galleries from.",
+  "category": "Kaltura",
+  "url": "https://kb.wisc.edu/luwmad/91275"
+}

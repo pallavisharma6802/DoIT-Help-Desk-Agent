@@ -1,0 +1,7 @@
+{
+  "id": "114600",
+  "title": "Microsoft 365 - Affected Teams behavior in Chrome due to privacy sandboxing",
+  "body": "When this will happen? Starting in January 2024 and continuing through the remainder of 2024. How this will affect you? Teams users who are using Google Chrome browser with this recent change will start seeing the following experiences: The new Teams web app will display a banner and require users to click it every 24 hours to remain signed in. This will impact users in your organization who can't use the Teams desktop app. The new Teams web app may include embedded experiences, such as apps, that no longer work. When this happens, Teams will give users the option of opening the embedded experience in a separate browser tab, or using the Teams desktop app. Classic Teams will show options to switch to the new Teams web app, and/or to use the desktop app. Other affected experiences include Teams chat in Outlook web app and Dynamics 365. The ‘Share to Teams’ dialog found in Outlook and other web apps or sites is also affected. What you need to do to prepare? We are providing this information for your awareness. If you accesses Teams in the Chrome browser, you may start being affected by this change. The recommendation is to use the Teams desktop client.",
+  "category": "Teams",
+  "url": "https://kb.wisc.edu/microsoft365/114600"
+}

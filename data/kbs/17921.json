@@ -1,0 +1,7 @@
+{
+  "id": "17921",
+  "title": "SIS - Opening Multiple Standalone SIS Sessions",
+  "body": "Issue You may be logged into SIS more than once. You click Sign Out on one instance and the other instance signs out; or you navigate or click a link in one of the SIS instances and it gives you a logged out or password expired message. The Advisor Center, Faculty Center, Student Center, Course Search & Enroll App all access SIS real-time data. Resolution To successfully have SIS open in multiple windows without one session impacting the other, you can either use two different browsers (i.e. Google Chrome, Mozilla Firefox), or use a private/incognito window to open another session: In Google Chrome , select the three dots customize button in the upper right corner, then, select \"New incognito window.\" Keyboard shortcut: CTRL + Shift + N In Mozilla Firefox , select the three lines menu button, then select \"New Private Window.\" If using containers, you may open tabs in separate containers. Keyboard shortcut: CTRL + Shift + P In Microsoft Edge , select the three dots settings button, then select \"New InPrivate window.\" Keyboard shortcut: CTRL + Shift + N Note: Internet Explorer is no longer recommended for use with SIS.",
+  "category": "Student_Center",
+  "url": "https://kb.wisc.edu/registrar/17921"
+}

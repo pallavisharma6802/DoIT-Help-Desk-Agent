@@ -1,0 +1,7 @@
+{
+  "id": "135973",
+  "title": "MacOS Upgrades and Updates",
+  "body": "In the interests of keeping compliant with the most current updates, you may encounter confusion between Updating to the new macOS (Sequoia) vs. running Updates for the current macOS (Sonoma). Apple will often show both options (if available) in the Update window, making the major upgrade to the new version of macOS more prominent. You may only need to run the Updates for the current OS (Sonoma) you are using, to stay compliant. Be mindful of which choice you are clicking, when attempting to update. Updating the current macOS (Sonoma) should not require administrator level credentials to run, and can be done using the computer login credentials. Updating to the new macOS (Sequoia) does require administrator level credentials to run. To update your SMPH computer to the new macOS (Sequoia) you will need to contact SMPH Shared Services IT ( support@med.wisc.edu ) for assistance. NOTE: We do not recommend going to the newest version of macOS until it has had it's second major patch release.  (Ex. Sequoia 15.2 or greater). To check for update availability: Click on the Apple in the corner of your screen, choose System Settings . Click General in the sidebar of the window that opens, then click Software Update on the right.",
+  "category": "OS_Support",
+  "url": "https://kb.wisc.edu/smph/135973"
+}

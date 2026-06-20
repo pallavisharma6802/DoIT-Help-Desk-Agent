@@ -1,0 +1,7 @@
+{
+  "id": "123986",
+  "title": "AntiVirus Scan - Cisco Secure Endpoint - Windows",
+  "body": "- In the Taskbar click on the hidden icons section (up arrow symbol, right side) . - Right click on the Cisco Secure Endpoint icon. - Select Open Cisco Secure Endpoint - Click the Scan Now button. - Choose Full Scan Scan of entire computer . - Allow the Full Scan to run and complete. NOTE: You should be able continue working while the scan is running. - After the scan is completed make note of the results, and or send a screen shot to the appropriate support personnel. Microsoft - Open Snipping Tool and take a screenshot https://support.microsoft.com/en-us/windows/open-snipping-tool-and-take-a-screenshot-a35ac9ff-4a58-24c9-3253-f12bac9f9d44 Also see: Cisco Secure Endpoint (AMP) - Running a Scan from the Local GUI https://kb.wisc.edu/security/page.php?id=94374 AMP System Scan https://confluence.med.wisc.edu/x/BABCAg",
+  "category": "Antivirus",
+  "url": "https://kb.wisc.edu/smph/123986"
+}

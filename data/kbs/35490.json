@@ -1,0 +1,7 @@
+{
+  "id": "35490",
+  "title": "UWNet Router Configuration Specifications",
+  "body": "This document operates under two assumptions with your router. 1. You have access to the router setup page or application for your respective router. This will be included within your router's documentation . 2. Your router has been registered on to UWNet. Please view this document for assistance with router registration. To make the process of configuring your router easier, it may be better to simply factory reset your router and then set it up again. The instructions for going about this will also be included with your router's documentation. Otherwise, feel free to alter your router's configuration from its current configuration or simply run the configuration wizard/setup process to obtain these settings. Note that your router may have differing setting and this document is just covering the general settings it should have. Any setting not mentioned below is inconsequential to successful internet connection on UWNet. Overview of the recommended settings for routers to properly connect to UW Net. Internet Connection Type/WAN Connection Type Automatic configuration DHCP Connection Sharing/Operation Mode Share a public IP address DHCP Server Enabled DDNS Disabled MAC Address Cloning Disabled Wireless Network Mode/Radio Mode Mixed/Automatic Wireless Security WPA2-Personal Remote Management Disabled",
+  "category": "WiFi",
+  "url": "https://kb.wisc.edu/housing/35490"
+}

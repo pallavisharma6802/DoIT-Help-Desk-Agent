@@ -1,0 +1,7 @@
+{
+  "id": "36578",
+  "title": "Support for LabVIEW Software Downloaded from Campus Software Library",
+  "body": "Installing Labview Software Run the setup application from the unzipped Academic Site License package. Follow the instructions of the Install Wizard. You will need to create a National Instruments Account in order to activate the product once the software has downloaded. For access, please refer to the Account Information posted on the Campus Software Library Labview Item Page Your system will need to reboot for LabView to authenticate and be ready for use.",
+  "category": "Software_Library",
+  "url": "https://kb.wisc.edu/helpdesk/36578"
+}

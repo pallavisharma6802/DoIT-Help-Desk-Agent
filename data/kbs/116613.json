@@ -1,0 +1,7 @@
+{
+  "id": "116613",
+  "title": "Microsoft 365 Teams Integration with Cisco Conference Rooms",
+  "body": "What will the change be? Any new Microsoft Teams Meeting invitation created after the change is implemented will contain new lines of text including a Video Conference ID number and a link to further instructions. *Note: This link and text will not be applied to meetings created prior to the date of the change. To include the Video Conference ID number and link, previous meeting will need to be deleted and recreated following the change. When will this change take place? This change is scheduled to occur on February 21, 2022. Additional Information Please see the following link for more detailed information about this change.",
+  "category": "Teams",
+  "url": "https://kb.wisc.edu/microsoft365/116613"
+}

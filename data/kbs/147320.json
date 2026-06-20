@@ -1,0 +1,7 @@
+{
+  "id": "147320",
+  "title": "Upgrading to macOS Sequoia",
+  "body": "Ensure that your Mac is plugged in, connected to the internet, and has at least 25 gigabytes of free space. You can find the amount of free space by going to System Settings > General > Storage. In the Apple menu bar, click on the Workspace ONE Intelligent Hub icon, then click \"Launch Intelligent Hub\". Once in Workspace ONE Intelligent Hub, find the search bar in the top right corner and search \"Sequoia\". Find \"Sequoia Upgrade\". Click \"Run\". Be sure to leave your Mac plugged in and awake during the update process. It can take up to a couple hours to complete.",
+  "category": "OS_Support",
+  "url": "https://kb.wisc.edu/smph/147320"
+}

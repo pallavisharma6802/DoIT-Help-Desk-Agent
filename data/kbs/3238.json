@@ -1,0 +1,7 @@
+{
+  "id": "3238",
+  "title": "NetID - Login Problems",
+  "body": "Verify you are entering your NetID in all lower-case letters. Note: If you are entering a 10-digit string of numbers, this is your Campus/Photo ID, which is not the same as your NetID. If you do not know your NetID, see NetID - Recovering a Forgotten NetID If you have forgotten your password, see NetID Account Recovery (Password Reset) Verify you are using one of the NetID - Recommended Browsers . Clear your web browser's cookies and cache (see Clearing Browser Cache and Cookies ). Setup your browser to accept cookies (use the \"managing cookies\" links on the bottom of Web Browsers - Cookies FAQ ). If you still cannot login, call or visit the DoIT Help Desk. For security reasons, these issues cannot be resolved via email or chat. To contact the DoIT Help Desk: Get Help from DoIT If you are in a computer lab environment, you may not have privileges to perform some of these steps, or some of them may not be applicable to your situation. Please contact the lab's support staff for assistance. See Also NetID - What is a NetID? NetID - Recovering a Forgotten NetID NetID Account Recovery (Password Reset) InfoLabs - Logging Into Lab Computers Using NetID",
+  "category": "NetID",
+  "url": "https://kb.wisc.edu/iam/3238"
+}

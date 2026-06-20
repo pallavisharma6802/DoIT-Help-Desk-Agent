@@ -1,0 +1,7 @@
+{
+  "id": "93964",
+  "title": "Using PaperCut Mobility Print (Windows)",
+  "body": "NOTE: You need to be on campus WiFi to use this feature 1. Go to http://engr-print.engr.wisc.edu:9163/setup/ 2. You should see a page like this: Click \"Download\" 3.  Run the downloaded file 4. Click \"Yes\" to allow this app to make changes to your device 5. Select a language and click \"Ok\" 6. Read and accept the license agreement, and click \"Next\" Setup will now detect printers that are available to to you. 7. Select which printers you would like to be able to print to, and click next. 8.  Enter your CAE Username and Password, and click Next.  Setup will now install the printers you selected on your computer 9 Click \"Finish\" to exit setup.  When you go to print a document, you should see all of the printers you installed as options to print to. Note: You will still need to release the print jobs, either from a release station or from: https://engr-papercut.engr.wisc.edu/user See Also Using Papercut Mobility Print(Mac)",
+  "category": "Printing",
+  "url": "https://kb.wisc.edu/cae/93964"
+}

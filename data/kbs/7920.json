@@ -1,0 +1,7 @@
+{
+  "id": "7920",
+  "title": "Active Directory - Remote Administration Tools",
+  "body": "Remote Server Administration Tools - Windows Server | Microsoft Docs Windows 11 22H2 and Newer: In Windows 11 RSAT Tools can be installed by an account logged in with administrator rights. Open the Settings > System > Optional Features. Select View features. Search 'RSAT' and tick the box for 'RSAT: Active Directory Domain Services and Lightweight Directory Service Tools.' Click 'Next' Windows 10 v1803 and Older: Table with download link for Windows 10 version 1803 or older Windows10 v1803 or older: RSAT .msu download macOS/Linux: Remote administration tools unavailable for macOS or Linux See Also Campus Active Directory - Moving a Newly Joined Machine to Your Organizational Unit Active Directory - Group Policy Management Campus Active Directory - NetID User Authentication",
+  "category": "Software_Library",
+  "url": "https://kb.wisc.edu/iam/7920"
+}

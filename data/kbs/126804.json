@@ -1,0 +1,7 @@
+{
+  "id": "126804",
+  "title": "Email Security - Subject Tagging",
+  "body": "What are the new Subject tags? [Attachment Removed] - Will be added to the Subject of any message where an attachment was removed by the secure email gateway. Please see Email Security - Executable Attachments for a complete list of file types that are removed before final delivery. [Not Virus Scanned] - Will be added to the Subject of any message that contains an attachment where the scanning engine was unable to scan for viruses. This could be due to password protected attachment or some other scanning error. We recommend that you treat these attachments with caution. See Also Email Security - Executable Attachments",
+  "category": "Phishing",
+  "url": "https://kb.wisc.edu/microsoft365/126804"
+}

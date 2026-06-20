@@ -1,0 +1,7 @@
+{
+  "id": "77930",
+  "title": "Cisco VoIP - Voicemail Media Player",
+  "body": "The Cisco media player is used to record greetings in the Voicemail portal. For more information, see Cisco VoIP - Voicemail Portal Sign in and Overview You can toggle between phone and computer mode. In computer mode, you will use your computer to play and record greetings. In telephone mode, you will use your telephone to play and record greetings. The telephone does not need to be a Cisco telephone. The Media Player will call you at the number listed in the player.. You can change the number to a another number such as a cell phone if you are not near your Cisco phone. You must format the number in E.164 format. For U.S. numbers, that means putting a +1 in front of the ten-digit number as shown below. The image will change as you toggle between computer and telephone mode. This image will display when the media player is in computer mode. This image will display when in telephone mode. The Media player will change when it you are recording a call. See image below for an example. If you need further help, please contact the DoIT Help Desk for assistance. See Also Cisco VoIP - Change voicemail greetings in the portal Cisco VoIP - Accessing voicemail from a telephone",
+  "category": "VoIP",
+  "url": "https://kb.wisc.edu/vs/77930"
+}

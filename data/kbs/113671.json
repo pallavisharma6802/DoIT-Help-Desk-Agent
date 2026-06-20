@@ -1,0 +1,7 @@
+{
+  "id": "113671",
+  "title": "Microsoft 365 (Apple Mail / Calendar) - Reconfigure Apple Mail / Calendar",
+  "body": "Open System Preferences . Within the System Preference menu, select Internet Accounts . Select your Exchange account and the minus button to remove the account. Select OK to confirm the account removal. On the Internet Accounts screen, select Microsoft Exchange . Enter the address of the account you are configuring using the following format: NetID Account: netid @wisc.edu (bbadger@wisc.edu) Service Account: name_domain @wisc.edu (bucky_athletics@wisc.edu). Note: If you entered your first.last @wisc.edu or something @ domain .wisc.edu address above, that will also work in getting your account configured. Also, if you are configuring a service account and do not know the password of the account you are configuring, contact your domain administrator. Select Sign In . You'll be redirected to the UW-Madison Login screen. Input your NetID and password. Authenticate with Duo. Select the applications you want to use with your Exchange account and select Done . See Also Microsoft 365 - Support for non-Microsoft clients Microsoft 365 - Which clients/protocols will be supported? Microsoft 365 - Setup/configure Outlook on mobile device or desktop computer",
+  "category": "O365",
+  "url": "https://kb.wisc.edu/helpdesk/113671"
+}

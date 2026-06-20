@@ -1,0 +1,7 @@
+{
+  "id": "107304",
+  "title": "Campus Network (iOS 14) - Private Wi-Fi Address on UWNet",
+  "body": "iOS 14 includes the Private Address feature, randomizing your device's MAC address. Due to how UWNet operates and authenticates devices to make sure the network is secure, devices with this feature enabled may have issues connecting to UWNet and eduroam. If you have a device that has iOS 18 or higher, see Campus Network (iOS 18, iPadOS 18, macOS Sequoia) - Private Wi-Fi Address on UWNet How to Turn Off the Private Address Feature Open Settings, and choose \"Wi-Fi.\" Click the blue \"i\" symbol next to either UWNet, eduroam, or both. Click the green toggle button next to \"Private Address.\" Then press \"Rejoin\" in the following pop-up The device should now be able to connect to UWNet or eduroam. For more info on how to disable the private Wi-Fi address feature across various devices, follow https://support.apple.com/en-us/HT211227 for more info. See Also UWNet - Log In to UWNet Connect to Campus Wi-Fi",
+  "category": "WiFi",
+  "url": "https://kb.wisc.edu/ns/107304"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "86217",
+  "title": "MFA-Duo - First Time Setup for Token/Fob",
+  "body": "Note: This document is only for setup if you're planning to use a token instead of a smartphone/tablet with MFA Duo. If you're planning to use a smartphone/tablet, see MFA-Duo - First Time Setup for Smartphone or Tablet . UW-Madison has selected Duo Multi-factor Authentication as our solution for Multi-factor Authentication. In order to utilize Multi-factor authentication, you will need to set it up on a smartphone or tablet. First Token Instructions for setting up your first token can be found here: MFA-Duo - How to Register a Token/Fob . Additional Tokens/Devices UW-Madison encourages users to add multiple devices in the event that they lose access to a single device. Instructions for adding devices can be found here: MFA-Duo - Adding Secondary/Backup Devices MFA-Duo - Generating Backup Passcodes for Future Use See Also MFA-Duo - What is a token/fob?",
+  "category": "Duo_MFA",
+  "url": "https://kb.wisc.edu/iam/86217"
+}

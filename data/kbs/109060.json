@@ -1,0 +1,7 @@
+{
+  "id": "109060",
+  "title": "Best Practices for remote host access in UW Public Cloud Providers",
+  "body": "We suggest using cloud native tools for virtual server access rather than use direct ssh or RDP access to VMs. Using these tools will help keep you hosts more secure by limiting access to these commonly targeted services, and will also put access to your hosts under NetID with MFA providing an added layer of security. Each provider provides a secure way to access virtual systems in the cloud. AWS: AWS Systems Manager has a solution called Session Manager. AWS Session Manager supports: Linux, MacOS and Windows hosts Session and Activity logging Access via the web console/portal of the provider Documentation here: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html Azure: Azure Supports a solution called Azure Bastion. Azure Bastion supports: Linux and Windows hosts Activity logging Access via the web console/portal of the provider Documentation here: https://docs.microsoft.com/en-us/azure/bastion/ GCP: Supports a solution called Identity Aware proxy. Identity Aware Proxy supports: Linux and Windows hosts Activity logging Access via the web console/portal of the provider Documentation here: https://cloud.google.com/iap Remote host access documentation here: https://cloud.google.com/iap/docs/using-tcp-forwarding",
+  "category": "Remote_Desktop",
+  "url": "https://kb.wisc.edu/public-cloud/109060"
+}

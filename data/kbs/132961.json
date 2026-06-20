@@ -1,0 +1,7 @@
+{
+  "id": "132961",
+  "title": "SMPH Operating System Requirements",
+  "body": "Current Operating System Requirements to be enrolled in Workspace ONE. Windows Windows 11 - Version 23H2 (OS Build 22631 or higher) Mac OS Tahoe 26.5 or higher Sequoia 15.7.7 Sonoma 14.8.7 macOS Tahoe is compatible with these computers https://support.apple.com/en-us/122867 macOS Sequoia is compatible with these computers https://support.apple.com/en-us/120282 macOS Sonoma is compatible with these computers https://support.apple.com/en-us/105113 How to check the version of Operating System you currently have. Windows Windows - Determining Version https://kb.wisc.edu/12034 Mac OS Find out which macOS your Mac is using https://support.apple.com/en-us/HT201260",
+  "category": "Endpoint_Mgmt",
+  "url": "https://kb.wisc.edu/smph/132961"
+}

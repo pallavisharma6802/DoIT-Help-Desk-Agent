@@ -1,0 +1,7 @@
+{
+  "id": "20589",
+  "title": "NetID - Changing a Password",
+  "body": "To change your current NetID password: Navigate to https://www.mynetid.wisc.edu/modify and login with your current NetID and password. Scroll down the page and click the Change Password button: This will bring you to the following page. Once you have entered your new password twice, click the Set Password button at the bottom of the page to save the changes. If you have forgotten your password, follow the instructions in NetID Account Recovery (Password Reset) . Once you have set your new password, you'll be sent back to the NetID Modification tool with a green success banner: You will also receive an email to your inbox to indicate that your password has been changed: Important: Following this change you will need to update any saved passwords on your web browsers, e-mail clients, and other places that you have stored your NetID credentials. For more information on UW-Madison's Password Standards see: https://policy.wisc.edu/library/UW-528 See Also NetID - Password Criteria and Requirements NetID Account Recovery (Password Reset) NetID - Account Utilities NetID - Login Problems",
+  "category": "NetID",
+  "url": "https://kb.wisc.edu/iam/20589"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "129000",
+  "title": "Faculty & Staff Computer Software Management",
+  "body": "After almost a decade of SJMC Apple devices using Managed Software Center (AKA Munki), all SJMC faculty and staff devices are switching over to the Workspace One software catalog for management. Workspace One is already installed and in use on all devices so there is nothing to install on computers. On macOS devices Managed Software Center will be uninstalled automatically. Most software has update capabilities built in so the nagging Managed Software Center did to install updates is no longer necessary. All computers, Windows and macOS, have the Workspace ONE Intelligent Hub application. Launching the application presents the user with the \"favorites\" section, which is empty by default. Click Apps to see all the applications available. To install an application click the \"Install\" or \"Run\" button. If you already have an application installed, clicking \"Run\" or \"Rerun\" will update it to the latest available version. Click \"See All\" on the right side of the window to see all applications available.",
+  "category": "Endpoint_Mgmt",
+  "url": "https://kb.wisc.edu/sjmc/129000"
+}

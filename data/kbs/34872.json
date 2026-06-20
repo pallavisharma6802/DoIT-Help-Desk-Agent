@@ -1,0 +1,7 @@
+{
+  "id": "34872",
+  "title": "Campus Active Directory - Join Windows Computer to Active Directory",
+  "body": "Windows 10 / Windows 11 From the Desktop, type System in the Search Windows box in the taskbar. In the System windows that appears, click on Change settings under the Computer name, domain, and Workgroup settings area. In the System Properties dialog box, select the Computer Name tab and click \"Change\" In the Computer Name Changes dialog box select Domain and enter the fully qualified domain name (ad.wisc.edu) in the text box Enter OU Owner/Admin credentials when prompted Click Ok when the \"Welcome to the domain\" message appears Reboot the computer",
+  "category": "Active_Directory",
+  "url": "https://kb.wisc.edu/iam/34872"
+}

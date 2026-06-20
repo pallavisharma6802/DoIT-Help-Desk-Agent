@@ -1,0 +1,7 @@
+{
+  "id": "74593",
+  "title": "WiscVPN GlobalProtect (Legacy iOS) - Installing, Connecting, and Uninstalling the GlobalProtect Legacy App",
+  "body": "Note from Palo Alto : GlobalProtect app 4.1.5 for iOS is now renamed GlobalProtect Legacy and is superseded by the newly redesigned GlobalProtect app 5.0. We recommend that you uninstall any older versions and download GlobalProtect app 5.0 from the App Store. Installing and Connecting to the Palo Alto GlobalProtect App Download and install the GlobalProtect App from the App Store (Requires iOS 11 and above). Open the app. Type uwmadison.vpn.wisc.edu in the server field, then tap Connect. On the next screen, type your NetID in the Account field, and your NetID password in the Password field, then tap OK. You will see a check mark next to the server name indicating that you are connected to WiscVPN. Disclaimer: You may receive a pop-up notification with the message \"'GlobalProtect' Would Like to Add VPN Configurations | All network activity on this device may be filtered or monitored when using a VPN\". This is only meant to mean that your internet traffic is re-routed through UW-Madison servers. This same message occurs with any VPN. Disconnecting from the Palo Alto GlobalProtect App Open the GlobalProtect App . Tap the Home icon on the bottom left corner of your screen. Tap Disconnect . You are now disconnected from GlobalProtect. See Also WiscVPN GlobalProtect (All OS) - Installing, Connecting, and Uninstalling",
+  "category": "VPN",
+  "url": "https://kb.wisc.edu/ns/74593"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "63293",
+  "title": "ECMS - Using RDS for Perceptive Content",
+  "body": "[Doc 8386 content is unavailable at this time.] UW-Madison Remote Desktop Service (RDS) RDS is a Remote Desktop Service that provides supplemental access for Mac and Linux users to applications that are only available on the Windows platform or access to a set of applications from remote locations (must use WiscVPN for remote access). At the request of the ECM/Imaging Team, RDS administrators have installed the current version of Perceptive Content for Imaging customers. If you primarily use a Mac OS X or Unix/Linux computer without the ability to run Windows applications, you can use RDS to run Perceptive Content. You will mostly have full functionality. Exceptions are highlighted below. NOTE : Imaging Team members have tested the following functions with positive results (7/7/2023): Client can connect to Perceptive Content Client can configure a Capture Profile Client can use ImageNow Printer to capture a document Client can search for, find and review a captured document Client can process a document in Imaging workflow Client can use a LearnMode with Chrome; and the LearnMode pulled the data for an ImageNow Printer document capture See Also: ECMS - Fundamentals - What is Perceptive Content UW-Madison Remote Desktop Service - Overview Remote Desktop Service - Connection Instructions",
+  "category": "Remote_Desktop",
+  "url": "https://kb.wisc.edu/ecms/63293"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "75258",
+  "title": "WiscVPN GlobalProtect (macOS) - Uninstalling",
+  "body": "In order to uninstall GlobalProtect, you must use the Install tool to download the uninstaller. Run the GlobalProtect installer file from when you downloaded the application. If you are unable to locate it, download it here: macOS Palo Alto GlobalProtect Download File . On the Introduction page, select Continue . On the Destination Select page, click Continue. On the Installation Type page, uncheck GlobalProtect and check Uninstall GlobalProtect . Click Continue . Click Install to run the Uninstall tool. If prompted, enter your User Name and Password , and then click Install Software to uninstall GlobalProtect. To completely remove GlobalProtect from your system, please follow the uninstallation steps above, then delete the following folders from your computer using the following pathways: Finder > Library > Application Support > PaloAltoNetworks Finder > Applications > GlobalProtect Finder > Users > {UserName} > Library > Application Support > PaloAltoNetworks /Library/Preferences/com.paloaltonetworks.GlobalProtect.settings.plist See Also WiscVPN GlobalProtect (macOS) - Installing, Connecting, and Uninstalling",
+  "category": "VPN",
+  "url": "https://kb.wisc.edu/ns/75258"
+}

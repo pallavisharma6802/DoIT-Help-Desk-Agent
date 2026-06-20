@@ -1,0 +1,7 @@
+{
+  "id": "24421",
+  "title": "NetID - Changing Account Recovery Questions",
+  "body": "Log into the NetID Account Modification Tool Change Account Recovery Questions Log into the NetID Account Modification Tool To begin, log into the NetID Account Modification tool at https://www.mynetid.wisc.edu/modify . Change Account Recovery Questions Scroll down and click the Set Recovery Questions button: You will be directed to this page: This section allows you to delete existing questions and/or add new questions for account recovery purposes. Once you have modified your questions and answered them, click the Save my answers button on the page to save the changes. Note: Answers are not case sensitive. It is recommended that once a year you update your NetID Password Recovery Questions. After successfully changing your recovery questions you'll be sent back to the NetID Modification tool with a green success banner: You will also receive an email confirming that you have changed your recovery questions: See Also NetID - Modifying your Account MFA-Duo - Request a Temporary Passcode",
+  "category": "NetID",
+  "url": "https://kb.wisc.edu/iam/24421"
+}

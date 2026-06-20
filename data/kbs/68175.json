@@ -1,0 +1,7 @@
+{
+  "id": "68175",
+  "title": "Azure - Licensing",
+  "body": "Azure - Licensing Microsoft Microsoft Windows Server and Microsoft SQL Server Customers who wish to use campus licenses for Windows Server  must first purchase licenses from the DoIT Tech Store with Software Assurance and then provision Windows virtual machines using Microsoft's documentation . Provisioning Windows Server 2022 from the Azure Marketplace will result in a virtual machine that will be billed at retail Windows Server 2022 Datacenter prices . Campus licensed software Please contact your local IT and purchasing staff to determine if a specific software license allows you to use that software in Azure. Some vendors do not consider Azure resources University-owned computing resources and do not extend their licenses to anything running in Azure.  Licenses can be purchased from DoIT . Licenses known to extend to resources hosted in Azure Bucky Backup Licenses known to not extend to resources hosted in Azure <Coming soon> Aware of license that is known to be compatible or incompatible with Azure and want it listed here? Email cloud-services@cio.wisc.edu . If you have any questions, feedback or ideas please Contact Us Commonly Referenced Docs: UW Madison Public Cloud Team Events Online Learning Classes for Cloud Vendors What Data Elements are allowed in the Public Cloud",
+  "category": "Software_Library",
+  "url": "https://kb.wisc.edu/public-cloud/68175"
+}

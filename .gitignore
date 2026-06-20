@@ -31,14 +31,14 @@ env/
 htmlcov/
 *.xml
 
-# ChromaDB — vector store (rebuild with python src/ingest.py index)
-data/chroma/
-chroma/
-*.chroma
+# # ChromaDB — vector store (rebuild with python src/ingest.py index)
+# data/chroma/
+# chroma/
+# *.chroma
 
-# KB data — scraped articles (rebuild with python src/ingest.py scrape)
-# Comment this out if you want to commit the scraped KBs
-data/kbs/
+# # KB data — scraped articles (rebuild with python src/ingest.py scrape)
+# # Comment this out if you want to commit the scraped KBs
+# data/kbs/
 
 # Langfuse local cache
 .langfuse/

@@ -1,0 +1,7 @@
+{
+  "id": "76756",
+  "title": "Google Shared Drives",
+  "body": "Overview Anyone with a valid NetID has access to the university's Google G Suite subscription. One of the features of the G Suite is access to Google's Shared Drives. Shared Drives allow for easy cloud file storage and collaboration, as you can specify users who can access all files in a given drive. You can also give access to Google users outside of the university. Getting Started 1. To set up a Google Team Drive, you must first log in to your UW G Suite account. You can do this by navigating to https://apps.google.wisc.edu or by logging in to Google using [your_netID]@wisc.edu , which will redirect you to the NetID login page. 2. From there, right click on Shared Drives, and then New shared drive , to create a new shared drive. 3. To add members to your drive, click Add members 4. You can search for other UW members by name or email, or enter the email address of members outside of the university. For more information about getting started with Google Team Drives, see https://support.google.com/a/users/answer/9310249?hl=en See Also https://workspace.google.com/faq/ https://kb.wisc.edu/google apps/",
+  "category": "Cloud_Storage",
+  "url": "https://kb.wisc.edu/cae/76756"
+}

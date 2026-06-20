@@ -1,0 +1,7 @@
+{
+  "id": "134209",
+  "title": "GlobalProtect VPN - Pre-login (Windows OS) - Windows 10",
+  "body": "Connect to Wi-Fi by selecting the network icon (1) and then selecting UWNet (2) and authenticating with NetID and NetID password or preferred network (at home) At the computer login screen , select the (bottom right corner) Double Network icon . Enter the smph.vpn.wisc.edu (if it's not already populated) Enter your UW Campus credentials ( NetID username and password). Next, you will be prompted for MFA-DUO authentication . Enter 1 , to send push to phone/mobile device. OR Enter code , generated from your Fob, or phone/mobile device. Once Connected, click \" Back \" to return to the normal user login window. Finally, login with username and password. Note: If this is a first time login, and you are using a temporary password, you should get prompted to change the password to one of your own choosing.",
+  "category": "VPN",
+  "url": "https://kb.wisc.edu/smph/134209"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "152453",
+  "title": "eduroam - Troubleshooting",
+  "body": "Use the correct credentials To log in to eduroam, you must use your full NetID email address . If you are just using your NetID, you will not be able to use eduroam. Username : NetID@wisc.edu Password : NetID Password Set up eduroam using the Configuration Assistant Tool (CAT) See Connect to Campus Wi-Fi for instructions to use the UW-Madison eduroam CAT. This is the best way to set up eduroam on your devices. You should only use this tool if you are affiliated with UW-Madison. This CAT will not work for members of other universities. Forget the eduroam network and reconnect Go to your device's Wi-Fi settings. Forget the eduroam network. Reconnect to eduroam and log in using your NetID email address and NetID password. Use UWNet If you need internet access and you aren't able to use eduroam, connect your device to UWNet. See UWNet - Log In to UWNet for instructions to log in and use to UWNet. Devices without browsers cannot use eduroam and must be registered on UWNet. See UWNet - Register a Device Without a Browser for instructions. See Also Connect to Campus Wi-Fi eduroam - End-user Benefits",
+  "category": "WiFi",
+  "url": "https://kb.wisc.edu/helpdesk/152453"
+}

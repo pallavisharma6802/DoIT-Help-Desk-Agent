@@ -1,0 +1,7 @@
+{
+  "id": "134161",
+  "title": "GlobalProtect - Connecting to the SMPH VPN using Windows 11",
+  "body": "Click the \"Show hidden icons\" section (up arrow, right side of taskbar) and select the GlobalProtect icon (white globe symbol) . Confirm the VPN Portal address ( smph.vpn.wisc.edu ) then, click the Connect button. Note: If you need to add the SMPH portal address to GlobalProtect do the following: Click the three bar icon (upper right corner) In the Connections window, select the plus symbol, Enter the portal address (smph.vpn.wisc.edu) , then click Add Enter your NetID Credentials, then click the Connect button. Type in a Fob generated pass code, or enter the number 1 for Duo Push to authenticate with app, then click the Sign In button. You should now be connected to the SMPH VPN portal. Also see: GlobalProtect VPN - Switching to the SMPH VPN Portal (Windows OS)",
+  "category": "VPN",
+  "url": "https://kb.wisc.edu/smph/134161"
+}

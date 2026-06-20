@@ -1,0 +1,7 @@
+{
+  "id": "76684",
+  "title": "Cisco VoIP - Voicemail Default PIN",
+  "body": "When a user is moved to Cisco VoIP they are given a new voicemail box that is entirely separate from their old voicemail box. Because of this they will have a new default PIN set. All UW-Madison Cisco VoIP users are given the same default PIN, they will be required to change it the first time they login. The default PIN is: 343842 If you need further help, please contact the DoIT Help Desk for assistance. See Also Cisco VoIP - Changing Voicemail PIN Cisco VoIP - Email notification of new voicemail messages Cisco VoIP - Accessing voicemail from a telephone Cisco VoIP - Change voicemail greetings in the portal Cisco VoIP - Change voicemail notifications in Self Care Portal",
+  "category": "VoIP",
+  "url": "https://kb.wisc.edu/vs/76684"
+}
