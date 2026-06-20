@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, Response
 from pydantic import BaseModel
 
@@ -26,6 +27,13 @@ from observability import log_full_session, new_session_id, estimate_cost
 log = logging.getLogger(__name__)
 
 app = FastAPI(title="DoIT KB Agentic Assistant")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 _session_metrics: dict = {}   # session_id -> metrics dict
 _session_state: dict = {}     # session_id -> SessionState
