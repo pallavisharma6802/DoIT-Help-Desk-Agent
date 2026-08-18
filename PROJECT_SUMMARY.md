@@ -30,8 +30,8 @@ Langfuse  (logged at /end-session)
 
 | Layer           | Choice                         | Why                                                    |
 | --------------- | ------------------------------ | ------------------------------------------------------ |
-| LLM             | Groq (llama-3.3-70b-versatile) | Fast inference, free tier                              |
-| Classifier LLM  | Groq (llama-3.1-8b-instant)    | Lightweight, cheap for binary classification           |
+| LLM             | Groq (openai/gpt-oss-120b)     | Fast inference, free tier                              |
+| Classifier LLM  | Groq (openai/gpt-oss-20b)      | Lightweight, cheap for binary classification           |
 | Agent framework | LangGraph                      | Built-in state graph, conditional edges, loop support  |
 | Vector store    | ChromaDB (persistent)          | Local, no infra needed                                 |
 | Embeddings      | HuggingFace (via API)          | Free, no local GPU needed                              |
@@ -57,9 +57,9 @@ Langfuse  (logged at /end-session)
 
 | Node       | What it does                                                                                             |
 | ---------- | -------------------------------------------------------------------------------------------------------- |
-| `classify` | Calls llama-3.1-8b to label query as `simple` or `complex` with confidence + reasoning                   |
+| `classify` | Calls gpt-oss-20b to label query as `simple` or `complex` with confidence + reasoning                    |
 | `retrieve` | Queries ChromaDB for top-3 KB articles not yet seen in this loop                                         |
-| `generate` | Calls llama-3.3-70b with system prompt + KB articles + conversation history. Produces answer + citations |
+| `generate` | Calls gpt-oss-120b with system prompt + KB articles + conversation history. Produces answer + citations  |
 | `resolve`  | Marks session as resolved, exits                                                                         |
 | `escalate` | Keeps best generated answer, appends DoIT help desk contact info, exits                                  |
 
@@ -95,7 +95,7 @@ When escalation is triggered, the agent **keeps the last generated answer** and 
 
 ## Classifier (`src/classifier.py`)
 
-- Model: `llama-3.1-8b-instant`
+- Model: `openai/gpt-oss-20b`
 - Output: `{complexity, confidence, reasoning, latency_ms, input_tokens, output_tokens}`
 - **simple**: single-step factual lookup answerable from one KB article (e.g., password reset, eduroam setup)
 - **complex**: involves account state changes, affiliation timelines, or likely needs follow-up (e.g., O365 lost after role change, Duo locked out)
@@ -165,8 +165,8 @@ Trace (session level)
 │  metadata: turns_taken, resolved, escalated, complexity,
 │            total tokens, cost, kb_ids_retrieved
 │
-├── msg-1-classify        llama-3.1-8b call, complexity/confidence/reasoning, tokens
-├── msg-1-iter-1          llama-3.3-70b, kb_ids_fetched, kb_citations, router_decision, latency_ms
+├── msg-1-classify        gpt-oss-20b call, complexity/confidence/reasoning, tokens
+├── msg-1-iter-1          gpt-oss-120b, kb_ids_fetched, kb_citations, router_decision, latency_ms
 ├── msg-1-iter-2          (only if complex and looped)
 ├── msg-1-answer          full answer, ttft_ms, resolved/escalated, complexity
 │
@@ -274,7 +274,7 @@ On re-retrieval, `graph_neighbors()` does BFS from every previously seen article
 
 ## Current Limits / Known Constraints
 
-- **Groq free tier**: 100k tokens/day for llama-3.3-70b-versatile. Heavy multi-turn testing exhausts this quickly.
+- **Groq free tier**: 100k tokens/day for gpt-oss-120b. Heavy multi-turn testing exhausts this quickly.
 - **`_MAX_TURNS = 4`**, **`_TOP_K = 3`**: agent searches at most 12 unique KB articles per user message before escalating.
 - **Langfuse logging is end-of-session only**: no real-time streaming of spans. This is by design to avoid per-message API overhead.
 - **Session state is in-memory** on the FastAPI server: restarting the API clears all active sessions.

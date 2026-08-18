@@ -8,9 +8,9 @@ An agentic RAG system that answers UW-Madison IT support questions using the [Do
 
 Queries go through a 4-node LangGraph pipeline:
 
-1. **Classify** - Llama 3.1 8B labels the query as `simple` or `complex`
+1. **Classify** - GPT-OSS 20B labels the query as `simple` or `complex`
 2. **Retrieve** - ChromaDB vector search returns the top-3 KB articles not seen yet
-3. **Generate** - Llama 3.3 70B answers using only the retrieved articles, citing KB IDs
+3. **Generate** - GPT-OSS 120B answers using only the retrieved articles, citing KB IDs
 4. **Route** - simple queries resolve in one turn; complex queries loop up to 4 turns, then escalate to a human agent
 
 Delta context injection keeps token usage low across turns: already-seen KB articles are never re-injected into the prompt.
@@ -32,7 +32,7 @@ Delta context injection keeps token usage low across turns: already-seen KB arti
 
 | Layer           | Tools                                                                  |
 | --------------- | ---------------------------------------------------------------------- |
-| LLM inference   | Groq API - Llama 3.1 8B (classifier), Llama 3.3 70B (generation)       |
+| LLM inference   | Groq API - GPT-OSS 20B (classifier), GPT-OSS 120B (generation)         |
 | Embeddings      | `sentence-transformers/all-MiniLM-L6-v2` via HuggingFace Inference API |
 | Vector store    | ChromaDB (persistent, cosine similarity)                               |
 | Knowledge graph | NetworkX - semantic similarity edges (threshold ≥ 0.60)                |
@@ -91,4 +91,4 @@ python visualize_graph.py   # opens kb_graph.html
 pytest tests/test_suite.py -v
 ```
 
-20 tests covering the classifier, retriever, context manager, agent pipeline, API endpoints, and a 10-thread load test.
+20 test cases (T01-T20, 129 parametrized runs) covering the classifier, retriever, context manager, agent pipeline, API endpoints, and a 10-thread load test.
