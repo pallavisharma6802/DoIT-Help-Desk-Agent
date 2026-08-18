@@ -14,7 +14,7 @@ from context_manager import (
 
 log = logging.getLogger(__name__)
 
-_REASONING_MODEL = "llama-3.3-70b-versatile"
+_REASONING_MODEL = "openai/gpt-oss-120b"
 _MAX_TURNS = 4
 _TOP_K = 3
 

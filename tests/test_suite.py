@@ -190,13 +190,13 @@ _DUMMY_NODES = [
 _GROQ_NOOP = {
     "content": "I was unable to fully resolve this issue based on the provided articles.",
     "input_tokens": 100, "output_tokens": 30,
-    "model": "llama-3.3-70b-versatile", "latency_ms": 200.0,
+    "model": "openai/gpt-oss-120b", "latency_ms": 200.0,
 }
 
 _GROQ_ANSWER = {
     "content": "To reset your NetID password, visit [KB-1140] https://kb.wisc.edu/1140 and follow the steps.",
     "input_tokens": 120, "output_tokens": 40,
-    "model": "llama-3.3-70b-versatile", "latency_ms": 210.0,
+    "model": "openai/gpt-oss-120b", "latency_ms": 210.0,
 }
 
 

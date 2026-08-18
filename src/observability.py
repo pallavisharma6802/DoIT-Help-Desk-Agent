@@ -10,8 +10,8 @@ import requests
 
 log = logging.getLogger(__name__)
 
-_COST_PER_INPUT_TOKEN  = 0.59 / 1_000_000   # llama-3.3-70b-versatile
-_COST_PER_OUTPUT_TOKEN = 0.79 / 1_000_000
+_COST_PER_INPUT_TOKEN  = 0.15 / 1_000_000   # openai/gpt-oss-120b
+_COST_PER_OUTPUT_TOKEN = 0.60 / 1_000_000
 
 
 def _get_credentials():
@@ -191,7 +191,7 @@ def log_full_session(
                     "traceId":              session_id,
                     "parentObservationId":  parent_span_id,
                     "name":                 f"msg-{msg_idx}-iter-{iteration_num}",
-                    "model":                "llama-3.3-70b-versatile",
+                    "model":                "openai/gpt-oss-120b",
                     "startTime":            it_start.isoformat(),
                     "endTime":              it_end.isoformat(),
                     "input":                {"query": td["query"]},

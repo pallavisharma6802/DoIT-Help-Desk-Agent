@@ -177,7 +177,7 @@ def end_session(body: EndSessionRequest):
     return {"status": "logged", "session_id": session_id}
 
 
-_REASONING_MODEL = "llama-3.3-70b-versatile"
+_REASONING_MODEL = "openai/gpt-oss-120b"
 
 
 @app.post("/agent-assist")

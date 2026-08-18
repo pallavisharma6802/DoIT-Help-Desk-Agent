@@ -6,7 +6,7 @@ from groq_client import groq_chat
 
 log = logging.getLogger(__name__)
 
-_MODEL = "llama-3.1-8b-instant"
+_MODEL = "openai/gpt-oss-20b"
 
 _SYSTEM_PROMPT = (
     "You are a query complexity classifier for a UW-Madison IT support system. "
@@ -32,7 +32,7 @@ def classify_query(query: str) -> Dict[str, Any]:
     result = groq_chat(
         model=_MODEL,
         messages=messages,
-        max_tokens=100,
+        max_tokens=300,
         temperature=0.0,
     )
 
