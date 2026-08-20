@@ -2,6 +2,8 @@
 
 An agentic RAG system that answers UW-Madison IT support questions using the [DoIT Knowledge Base](https://kb.wisc.edu). Built with a LangGraph pipeline, ChromaDB vector search, and a React + Vite chat UI.
 
+**Live demo:** https://doit-help-desk-agent-1.onrender.com/ (backend is on Render's free tier and spins down with inactivity — first request after idle can take ~50s)
+
 ---
 
 ## How it works
